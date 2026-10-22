@@ -1,0 +1,1 @@
+export const COLLAPSE_KEY = Symbol("key for collapse")
