@@ -718,7 +718,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@number-flow/vue@^0.5.2":
+"@number-flow/vue@0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@number-flow/vue/-/vue-0.5.2.tgz#71e5469b353cc88decae6c3f8c2877f91f58bb34"
   integrity sha512-+FvSTXuIVeFxiTMQFv7NFGE8qqy6qVe+0s/55yascW4JWkd60twPGjN+/iFQCNW43EI2w3Yn1oUXt93kYdAyEA==
@@ -3581,7 +3581,7 @@ number-flow@0.6.2:
   dependencies:
     esm-env "^1.1.4"
 
-nuxt-svgo@^5.3.0:
+nuxt-svgo@5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/nuxt-svgo/-/nuxt-svgo-5.3.0.tgz#60e055d71188cc6ade482965451d4578e0451c72"
   integrity sha512-tZXAEwwYIy315K/9lxQfEXIQIWJO3hCiK5xBAKUDAmgss90Gr1RvCOZ4vGt/nmaiHSu2GhcAZ0gu9MxnUrmm6g==
@@ -4045,6 +4045,16 @@ powershell-utils@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/powershell-utils/-/powershell-utils-0.2.1.tgz#0853016f5b3c12d52b9571c8fe8059677d9ddbe2"
   integrity sha512-C+y9x90UElAddDZmV4qOx9W53B61PO7cIqWz2dQsWlwswuq4mr8NEwytdGKboYbQlGZ3awrkTeNvcZiZNHnQ8A==
+
+prettier-plugin-tailwindcss@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.8.1.tgz#bb30f2794dbaa2ef0d36e39ebc258c8c03d8f0c3"
+  integrity sha512-iaFMYqDsE4ffdDkn5qup0j5f2aCEBFZrdrZnvu9QKTlWx/iGPeQ4HHu7b7fCPMxeo9nwQBiOAh2nSypdFYWJkw==
+
+prettier@3.9.10:
+  version "3.9.10"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.9.10.tgz#ac378e432f1a7381518f2e080816bbaefa38d585"
+  integrity sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==
 
 pretty-bytes@^7.1.0:
   version "7.2.0"

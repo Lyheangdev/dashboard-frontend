@@ -6,12 +6,7 @@
       height: `${size}px`,
     }"
   >
-    <svg
-      :width="size"
-      :height="size"
-      viewBox="0 0 100 100"
-      class="block"
-    >
+    <svg :width="size" :height="size" viewBox="0 0 100 100" class="block">
       <!-- Background circle -->
       <circle
         cx="50"
@@ -32,7 +27,7 @@
         stroke="currentColor"
         stroke-width="10"
         stroke-linecap="round"
-        class="-rotate-90 origin-center transition-[stroke-dashoffset] duration-700 ease-out"
+        class="origin-center -rotate-90 transition-[stroke-dashoffset] duration-700 ease-out"
         :class="color"
         :stroke-dasharray="dashArray"
         :stroke-dashoffset="dashOffset"
@@ -44,7 +39,7 @@
       class="absolute inset-0 flex flex-col items-center justify-center font-bold"
       :style="{ fontSize }"
     >
-      <p> {{ Math.round(animatedPercent) }}%</p>
+      <p>{{ Math.round(animatedPercent) }}%</p>
       <p class="text-[8px]">Overall</p>
     </div>
   </div>

@@ -4,14 +4,10 @@ const lines = ref<Array<string>>([])
 let eventSource: EventSource | null = null
 
 onMounted(() => {
-
-  eventSource = new EventSource(
-    'http://localhost:8000/api/v1/sse/stream'
-  )
+  eventSource = new EventSource('http://localhost:8000/api/v1/sse/stream')
 
   eventSource.onmessage = (event: MessageEvent) => {
-
-    const line = JSON.parse(event.data) as {data : string}
+    const line = JSON.parse(event.data) as { data: string }
 
     console.log('New line:', line)
 

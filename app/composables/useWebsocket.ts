@@ -1,54 +1,54 @@
 export const useWebsocket = (url: string) => {
-  const data = ref<string[]>([]);
-  const status = ref<"CONNECTING" | "OPEN" | "CLOSED">("CONNECTING");
-  let websocket: WebSocket | null = null;
+  const data = ref<string[]>([])
+  const status = ref<'CONNECTING' | 'OPEN' | 'CLOSED'>('CONNECTING')
+  let websocket: WebSocket | null = null
 
   function connectToWebsocket() {
-    websocket = new WebSocket(url);
+    websocket = new WebSocket(url)
 
     //-- Check if the connection is open
     websocket.onopen = () => {
-      status.value = "OPEN";
-    };
+      status.value = 'OPEN'
+    }
 
     //-- Recieve realtime payload stream
     websocket.onmessage = (event: MessageEvent) => {
-      if (!event.data) return;
-      const response = JSON.parse(event.data) as { payload: string };
+      if (!event.data) return
+      const response = JSON.parse(event.data) as { payload: string }
       data.value = [...data.value, response.payload]
-    };
+    }
 
     //-- Close the websocket connection
     websocket.onclose = () => {
-      status.value = "CLOSED";
-    };
+      status.value = 'CLOSED'
+    }
 
     //-- Handle exception | error
     websocket.onerror = (err: any) => {
-      console.error(err);
-    };
+      console.error(err)
+    }
   }
 
   function sendMessage(message: string) {
     if (websocket?.readyState === WebSocket.OPEN) {
       const payload = {
         payload: message,
-      };
-      websocket.send(JSON.stringify(payload));
+      }
+      websocket.send(JSON.stringify(payload))
     }
   }
 
   function closeConnection() {
-    websocket?.close();
+    websocket?.close()
   }
 
   onMounted(() => {
-    connectToWebsocket();
-  });
+    connectToWebsocket()
+  })
 
   onBeforeUnmount(() => {
-    close();
-  });
+    close()
+  })
 
-  return { data, status, sendMessage, closeConnection };
-};
+  return { data, status, sendMessage, closeConnection }
+}
