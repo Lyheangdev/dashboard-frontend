@@ -15,6 +15,8 @@ const trackerState = reactive({
 
 const handlePointerDown = (evt: PointerEvent) => {
   const currElement = evt.currentTarget as HTMLElement;
+  if (isInteractiveElement(evt.target)) return;
+
   trackerState.isDragging = true;
   trackerState.initX = evt.clientX;
 
@@ -23,7 +25,7 @@ const handlePointerDown = (evt: PointerEvent) => {
 };
 
 const handlePointerMove = (evt: PointerEvent) => {
-  if (!trackerState.isDragging) return;
+  if (!trackerState.isDragging || isInteractiveElement(evt.target)) return;
 
   trackerState.currentX = evt.clientX;
   const diffX = evt.clientX - trackerState.initX;
@@ -33,6 +35,8 @@ const handlePointerMove = (evt: PointerEvent) => {
 };
 
 const handlePointerReleave = (evt: PointerEvent) => {
+  if (isInteractiveElement(evt.target)) return;
+
   const currElement = evt.currentTarget as HTMLElement;
   trackerState.isDragging = false;
 
@@ -54,18 +58,14 @@ watch(dynamicWidth, (width) => {
 
 <template>
   <div
-    class="relative h-4! w-4! cursor-grab select-none"
+    class="relative h-3.5! w-3.5! cursor-pointer select-none"
     :class="[containerClass]"
     @pointerdown.stop="handlePointerDown"
     @pointermove.stop="handlePointerMove"
     @pointerup.stop="handlePointerReleave"
     @pointercancel.stop="handlePointerReleave"
-    @pointerleave="handlePointerReleave"
+    @pointerleave.stop="handlePointerReleave"
   >
-    <IconColResize
-      class="h-4! w-4! text-gray-400 hover:text-gray-600"
-      :class="[iconClass]"
-      filled
-    />
+    <IconColResize class="h-3.5! w-3.5! text-white" :class="[iconClass]" filled />
   </div>
 </template>
