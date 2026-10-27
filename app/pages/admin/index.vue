@@ -115,7 +115,7 @@ definePageMeta({
       <SmartTable
         :is-loading="true"
         :column-fileds="
-          defineColumnFields(['id','email', 'first_name', 'last_name', 'created_at'])
+          defineColumnFields(['id', 'email', 'first_name', 'last_name', 'created_at'])
         "
         :columns-config="{
           id: {
@@ -152,6 +152,7 @@ definePageMeta({
             key: 'col-key-created_at',
             label: 'Created at',
             sorted: true,
+            copied: true,
             type: String,
             width: 180,
             textHeaderClass: 'captalize text-white',

@@ -18,6 +18,7 @@ declare global {
     width: number;
     type: StringConstructor | NumberConstructor | BooleanConstructor;
     sorted?: boolean;
+    copied?: boolean;
     heanderClass?: string;
     textHeaderClass?: string;
     textClass?: string;

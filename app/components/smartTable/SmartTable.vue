@@ -85,6 +85,10 @@ const handleSelectIndividual = (isChecked: boolean, recordId: number | null | un
   if (isChecked) recordIds.value.add(recordId);
   else recordIds.value.delete(recordId);
 };
+
+const x = () => {
+  alert('something');
+};
 </script>
 
 <template>
@@ -155,7 +159,11 @@ const handleSelectIndividual = (isChecked: boolean, recordId: number | null | un
                 headerConfigs[i]?.class,
               ]"
             >
-              <div>
+              <div class="flex items-center gap-2">
+                <SmartCopyClipboard
+                  v-if="!!extractColumnConfig(colKey)?.copied"
+                  :text="String(valueData)"
+                />
                 <span class="text-gray-700" :class="extractColumnConfig(colKey)?.textClass">{{
                   valueData
                 }}</span>
