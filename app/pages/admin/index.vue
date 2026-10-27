@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import IconSearch from '~~/public/icons/search.svg'
-import IconSortBy from '~~/public/icons/sort.svg'
-import IconFilter from '~~/public/icons/filter-pipe.svg'
-import IconChevronLeft from '~~/public/icons/chevron-left.svg'
-import IconChevronRight from '~~/public/icons/chevron-right.svg'
-import IconTick from '~~/public/icons/check.svg'
+import IconSearch from '~~/public/icons/search.svg';
+import IconSortBy from '~~/public/icons/sort.svg';
+import IconFilter from '~~/public/icons/filter-pipe.svg';
+import IconChevronLeft from '~~/public/icons/chevron-left.svg';
+import IconChevronRight from '~~/public/icons/chevron-right.svg';
+import IconTick from '~~/public/icons/check.svg';
 
 definePageMeta({
   layout: 'admin',
-})
+});
 </script>
 
 <template>
@@ -43,7 +43,7 @@ definePageMeta({
               class="bg-primary relative flex w-fit items-center gap-1.5 rounded-md px-2.5 py-1.5"
             >
               <IconFilter class="size-4! text-blue-400" filled />
-              <span class="text-[13px] text-gray-500">Filter</span>
+              <span class="text-[13px] text-gray-500">Filter By</span>
             </div>
           </div>
           <div class="h-5 w-px bg-gray-300" />
@@ -111,140 +111,125 @@ definePageMeta({
         </div>
       </div>
 
-      <div
-        class="relative w-full grow scrollbar-thin scrollbar-thumb-gray-200 overflow-x-auto scroll-smooth rounded-xl bg-blue-400/8 p-2"
-      >
-        <table class="w-full table-fixed">
-          <thead class="bg-blue-300/20">
-            <tr class="text-sm text-blue-400">
-              <th class="w-16 max-w-16 rounded-l-lg bg-blue-200 py-1.5">
-                <div class="relative mt-0.5">
-                  <input
-                    type="checkbox"
-                    class="peer size-5 cursor-pointer appearance-none rounded-sm border border-blue-200 bg-white checked:bg-blue-400"
-                  />
-                  <IconTick
-                    class="pointer-events-none absolute top-[45%] left-1/2 hidden size-5! -translate-x-1/2 -translate-y-1/2 text-white peer-checked:block"
-                    filled
-                  />
-                </div>
-              </th>
-
-              <th class="w-30 px-4 text-left">Line ID</th>
-
-              <th class="min-50 w-50 px-4 text-left">Line Name</th>
-
-              <th class="min-28 w-28 px-4 text-left">Line Status</th>
-
-              <th class="min-64 w-65 px-4 text-left">Line Description</th>
-
-              <th class="rounded-r-lg px-4 text-left">Create Date</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr class="text-[13px] text-gray-700 even:bg-blue-100">
-              <td class="px-5.5 py-1.5">
-                <div class="relative mt-0.5">
-                  <input
-                    type="checkbox"
-                    class="peer size-5 cursor-pointer appearance-none rounded-sm border border-blue-200 bg-white checked:bg-blue-400"
-                  />
-                  <IconTick
-                    class="pointer-events-none absolute top-[45%] left-1/2 hidden size-5! -translate-x-1/2 -translate-y-1/2 text-white peer-checked:block"
-                    filled
-                  />
-                </div>
-              </td>
-              <td class="w-30 px-5 py-1.5 text-left">1</td>
-              <td class="min-50 w-50 px-5 py-1.5 text-left">LNK</td>
-              <td class="min-28 w-28 px-5 py-1.5 text-left">
-                <span
-                  class="rounded-md bg-amber-500/15 px-3 py-1 text-xs leading-[100%] text-amber-500"
-                  >Stopped</span
-                >
-              </td>
-              <td class="min-64 w-65 px-5 py-1.5 text-left">LNK 2016 customer</td>
-              <td class="px-5 py-1.5 text-left">May, 15 2026</td>
-            </tr>
-
-            <tr class="text-[13px] text-gray-700 even:bg-blue-100/40">
-              <td class="px-5.5 py-1.5">
-                <div class="relative mt-0.5">
-                  <input
-                    type="checkbox"
-                    class="peer size-5 cursor-pointer appearance-none rounded-sm border border-blue-200 bg-white checked:bg-blue-400"
-                  />
-                  <IconTick
-                    class="pointer-events-none absolute top-[45%] left-1/2 hidden size-5! -translate-x-1/2 -translate-y-1/2 text-white peer-checked:block"
-                    filled
-                  />
-                </div>
-              </td>
-              <td class="w-30 px-5 py-1.5 text-left">2</td>
-              <td class="min-50 w-50 px-5 py-1.5 text-left">RTK</td>
-              <td class="min-28 w-28 px-5 py-1.5 text-left">
-                <span
-                  class="rounded-md bg-green-500/15 px-3 py-1 text-xs leading-[100%] text-green-500"
-                  >Running</span
-                >
-              </td>
-              <td class="min-64 w-65 px-5 py-1.5 text-left">RTK 2016 customer</td>
-              <td class="px-5 py-1.5 text-left">May, 28 2026</td>
-            </tr>
-
-            <tr class="text-[13px] text-gray-700">
-              <td class="px-5.5 py-1.5">
-                <div class="relative mt-0.5">
-                  <input
-                    type="checkbox"
-                    class="peer size-5 cursor-pointer appearance-none rounded-sm border border-blue-200 bg-white checked:bg-blue-400"
-                  />
-                  <IconTick
-                    class="pointer-events-none absolute top-[45%] left-1/2 hidden size-5! -translate-x-1/2 -translate-y-1/2 text-white peer-checked:block"
-                    filled
-                  />
-                </div>
-              </td>
-              <td class="w-30 px-5 py-1.5 text-left">3</td>
-              <td class="min-50 w-50 px-5 py-1.5 text-left">ABB</td>
-              <td class="min-28 w-28 px-5 py-1.5 text-left">
-                <span
-                  class="rounded-md bg-green-500/15 px-3 py-1 text-xs leading-[100%] text-green-500"
-                  >Running</span
-                >
-              </td>
-              <td class="min-64 w-65 px-5 py-1.5 text-left">ABB 2016 customer</td>
-              <td class="px-5 py-1.5 text-left">May, 28 2026</td>
-            </tr>
-
-            <tr class="text-[13px] text-gray-700 even:bg-blue-100/40">
-              <td class="px-5.5 py-1.5">
-                <div class="relative mt-0.5">
-                  <input
-                    type="checkbox"
-                    class="peer size-5 cursor-pointer appearance-none rounded-sm border border-blue-200 bg-white checked:bg-blue-400"
-                  />
-                  <IconTick
-                    class="pointer-events-none absolute top-[45%] left-1/2 hidden size-5! -translate-x-1/2 -translate-y-1/2 text-white peer-checked:block"
-                    filled
-                  />
-                </div>
-              </td>
-              <td class="w-30 px-5 py-1.5 text-left">4</td>
-              <td class="min-50 w-50 px-5 py-1.5 text-left">ABC</td>
-              <td class="min-28 w-28 px-5 py-1.5 text-left">
-                <span
-                  class="rounded-md bg-green-500/15 px-3 py-1 text-xs leading-[100%] text-green-500"
-                  >Running</span
-                >
-              </td>
-              <td class="min-64 w-65 px-5 py-1.5 text-left">ABC 2016 customer</td>
-              <td class="px-5 py-1.5 text-left">May, 28 2026</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- Table section -->
+      <SmartTable
+        :is-loading="true"
+        :column-fileds="
+          defineColumnFields(['id', 'email', 'first_name', 'last_name', 'created_at'])
+        "
+        :columns-config="{
+          id: {
+            key: 'col-key-id',
+            label: 'Id',
+            type: Number,
+            width: 80,
+            textHeaderClass: 'captalize text-white',
+            heanderClass: 'px-8',
+          },
+          email: {
+            key: 'col-key-email',
+            label: 'Email',
+            sorted: true,
+            type: String,
+            width: 280,
+            textHeaderClass: 'captalize text-white',
+          },
+          first_name: {
+            key: 'col-key-first_name',
+            label: 'First Name',
+            type: String,
+            width: 180,
+            textHeaderClass: 'captalize text-white',
+          },
+          last_name: {
+            key: 'col-key-last_name',
+            label: 'Last Name',
+            type: String,
+            width: 180,
+            textHeaderClass: 'captalize text-white',
+          },
+          created_at: {
+            key: 'col-key-created_at',
+            label: 'Created at',
+            sorted: true,
+            type: String,
+            width: 180,
+            textHeaderClass: 'captalize text-white',
+          },
+        }"
+        :columnsData="[
+          {
+            id: 1,
+            email: 'lyheangdev@gmail.com',
+            first_name: 'lyheang',
+            last_name: 'dev',
+            created_at: '12-09-2026 12:56',
+          },
+          {
+            id: 2,
+            email: 'vichetsom@gmail.com',
+            first_name: 'vichet',
+            last_name: 'som',
+            created_at: '15-09-2026 01:56',
+          },
+          {
+            id: 3,
+            email: 'dara.chan@gmail.com',
+            first_name: 'dara',
+            last_name: 'chan',
+            created_at: '18-09-2026 09:30',
+          },
+          {
+            id: 4,
+            email: 'sokha.kim@gmail.com',
+            first_name: 'sokha',
+            last_name: 'kim',
+            created_at: '20-09-2026 14:45',
+          },
+          {
+            id: 5,
+            email: 'bopha.lim@gmail.com',
+            first_name: 'bopha',
+            last_name: 'lim',
+            created_at: '22-09-2026 08:15',
+          },
+          {
+            id: 6,
+            email: 'sopheak.hem@gmail.com',
+            first_name: 'sopheak',
+            last_name: 'hem',
+            created_at: '24-09-2026 10:20',
+          },
+          {
+            id: 7,
+            email: 'chenda.ou@gmail.com',
+            first_name: 'chenda',
+            last_name: 'ou',
+            created_at: '26-09-2026 13:40',
+          },
+          {
+            id: 8,
+            email: 'vanna.chea@gmail.com',
+            first_name: 'vanna',
+            last_name: 'chea',
+            created_at: '28-09-2026 16:25',
+          },
+          {
+            id: 9,
+            email: 'pisey.kong@gmail.com',
+            first_name: 'pisey',
+            last_name: 'kong',
+            created_at: '30-09-2026 07:50',
+          },
+          {
+            id: 10,
+            email: 'rithy.seng@gmail.com',
+            first_name: 'rithy',
+            last_name: 'seng',
+            created_at: '02-10-2026 11:35',
+          },
+        ]"
+      />
     </div>
   </div>
 </template>

@@ -12,7 +12,7 @@ const props = defineProps<{ menu: Menu | undefined }>()
       class="relative flex max-h-screen w-60 max-w-60 flex-col gap-1 bg-white"
     >
       <div class="h-9 px-4 py-2">
-        <h2 class="text-lg font-semibold capitalize">Content Management</h2>
+        <h2 class="text-lg font-bold uppercase">Smart Dashboard</h2>
       </div>
 
       <div class="relative mt-1 px-3">
