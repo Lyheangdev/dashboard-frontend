@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const scrollableContainer = useTemplateRef('table-scrollable-container');
+const scrollableContainerRef = useTemplateRef('table-scrollable-container');
 
 const trackerState = reactive({
   isScrollable: false,
@@ -10,7 +10,7 @@ const trackerState = reactive({
 });
 
 const checkScrollable = () => {
-  const srContainer = scrollableContainer.value;
+  const srContainer = scrollableContainerRef.value;
   if (srContainer && srContainer.scrollWidth > srContainer.clientWidth) {
     trackerState.isScrollable = true;
   } else {
@@ -40,8 +40,8 @@ const handlePointerMove = (evt: PointerEvent) => {
   trackerState.diffX = trackerState.diffX + diffX;
 
   //-- Applying pan scroll effect
-  if (scrollableContainer?.value) {
-    scrollableContainer.value.scrollLeft -= diffX;
+  if (scrollableContainerRef?.value) {
+    scrollableContainerRef.value.scrollLeft -= diffX;
   }
 
   trackerState.initX = evt.clientX;
@@ -51,7 +51,6 @@ const handlePointerReleave = (evt: PointerEvent) => {
   if (isInteractiveElement(evt.target)) return;
   const currElement = evt.currentTarget as HTMLElement;
   trackerState.isDragging = false;
-  checkScrollable();
 
   //Unregister capture outside scope event
   if (currElement.hasPointerCapture(evt.pointerId)) {

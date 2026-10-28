@@ -1,12 +1,33 @@
 <script setup lang="ts" generic="T extends IColumnsField, K extends ICollumnHeader<T>">
+import dayjs from 'dayjs';
+
 interface Props {
   isLoading?: boolean;
   columnFileds: T;
   columnsConfig: K;
+  displayFields: string[];
+  defaultSortField: string;
+  stickyField?: string;
   columnsData: ICollumnData<K>[];
 }
+
+const emiter = defineEmits<{
+  (event: 'onSelect', ids: number[]): void;
+}>();
+
+interface ISorting {
+  key: string;
+  order: ISortOrder;
+  type: ISortType;
+}
+
 const props = withDefaults(defineProps<Props>(), { isLoading: false });
 const recordIds = ref<Set<number>>(new Set());
+const sorting = reactive<ISorting>({
+  key: `${props.defaultSortField}`,
+  type: 'number',
+  order: 'asc',
+});
 
 /**
  * @description: Hold all columns configuration
@@ -14,6 +35,40 @@ const recordIds = ref<Set<number>>(new Set());
 const headerConfigs = computed(
   () => Object.values(props.columnsConfig) as ICollumnHeaderValue<T>[],
 );
+
+/**
+ * @description: sort record row
+ */
+const recordsData = computed(() => {
+  if (!sorting?.key || !sorting?.order || !sorting?.type) {
+    return props.columnsData;
+  }
+
+  const sortedData = [...props.columnsData].sort((a, b) => {
+    const sKey = sorting.key as keyof K;
+    const sType = sorting.type as ISortType;
+    const sSortOrder = sorting.order as ISortOrder;
+
+    if (sKey && sType === 'number') {
+      // sort by number field
+      const first = Number(a[sKey]);
+      const second = Number(b[sKey]);
+      return sSortOrder === 'asc' ? first - second : second - first;
+    } else if (sKey && sType == 'date') {
+      // sort by date field
+      const first = String(a[sKey]);
+      const second = String(b[sKey]);
+      return sSortOrder === 'asc'
+        ? dayjs(first).valueOf() - dayjs(second).valueOf()
+        : dayjs(second).valueOf() - dayjs(first).valueOf();
+    }
+    const first = String(a[sKey]);
+    const second = String(b[sKey]);
+    return sSortOrder === 'asc' ? first.localeCompare(second) : second.localeCompare(first);
+  });
+
+  return sortedData;
+});
 
 /**
  * @description: Extract column config
@@ -86,14 +141,27 @@ const handleSelectIndividual = (isChecked: boolean, recordId: number | null | un
   else recordIds.value.delete(recordId);
 };
 
-const x = () => {
-  alert('something');
+/**
+ * @description: Handle sorting
+ */
+const handleSorting = (key: string, order: ISortOrder, type: ISortType) => {
+  sorting.key = key;
+  sorting.order = order;
+  sorting.type = type;
+};
+
+/**
+ * @description: Check sticky field
+ */
+const checkStickyField = (colKey?: string | null) => {
+  if (!props?.stickyField || !colKey) return false;
+  return colKey == props.stickyField;
 };
 </script>
 
 <template>
   <div>
-    <SmartTableScrollable>
+    <SmartTableScrollable ref="tableScroll">
       <table class="w-full table-fixed" :style="{ minWidth: `${dynamicMinWithTable}px` }">
         <thead>
           <tr>
@@ -107,24 +175,34 @@ const x = () => {
               </div>
             </th>
 
-            <SmartColumn
-              v-for="(colConfig, i) in Object.entries(columnsConfig)"
-              :key="(colConfig[1] as ICollumnHeaderValue<T>)?.key"
-              :columnConfigs="colConfig[1] as ICollumnHeaderValue<T>"
-              :is-last-colmn="i == (headerConfigs || []).length - 1"
-              :class="{ 'sticky left-10 z-10 backdrop-blur-sm': i == 0 }"
-              @change="
-                (width) => {
-                  handleColumnWidthResize(colConfig[0], width);
-                }
-              "
-            />
+            <!--! If you want other field to left sticky instead, just change the value of (i) which respect to the field index -->
+            <template v-for="([colKey, config], i) in Object.entries(columnsConfig)" :key="colKey">
+              <SmartColumn
+                v-if="displayFields.includes(colKey)"
+                :columnConfigs="config as ICollumnHeaderValue<T>"
+                :is-last-colmn="i == (headerConfigs || []).length - 1"
+                :class="{ 'sticky left-10 z-10 backdrop-blur-sm': checkStickyField(colKey) }"
+                @change="
+                  (width) => {
+                    handleColumnWidthResize(colKey, width);
+                  }
+                "
+                @sort="
+                  (sortOrder) =>
+                    handleSorting(
+                      colKey,
+                      sortOrder,
+                      (config as ICollumnHeaderValue<T>)?.sort?.sortType as ISortType,
+                    )
+                "
+              />
+            </template>
           </tr>
         </thead>
 
         <tbody>
           <tr
-            v-for="(row, i) in columnsData"
+            v-for="(row, i) in recordsData"
             :key="i"
             class="border-b border-b-white/70 duration-200 ease-linear last:border-none even:bg-blue-200 hover:bg-blue-400"
             :class="[
@@ -149,26 +227,31 @@ const x = () => {
               </div>
             </td>
 
-            <td
-              v-for="([colKey, valueData], j) in Object.entries(row)"
-              :key="`${i}_${j}`"
-              class="border-r border-r-white/70 bg-blue-50/70 text-sm last:border-none"
-              :class="[
-                'px-5 py-2',
-                { 'sticky left-10 z-10 bg-blue-200 px-8 text-center font-medium': j == 0 },
-                headerConfigs[i]?.class,
-              ]"
-            >
-              <div class="flex items-center gap-2">
-                <SmartCopyClipboard
-                  v-if="!!extractColumnConfig(colKey)?.copied"
-                  :text="String(valueData)"
-                />
-                <span class="text-gray-700" :class="extractColumnConfig(colKey)?.textClass">{{
-                  valueData
-                }}</span>
-              </div>
-            </td>
+            <!--! If you want other field to left sticky instead, just change the value of (j) which respect to the field index  -->
+            <template v-for="([colKey, valueData], j) in Object.entries(row)" :key="`${i}_${j}`">
+              <td
+                v-if="displayFields.includes(String(colKey))"
+                class="border-r border-r-white/70 bg-blue-50/70 text-sm last:border-none"
+                :class="[
+                  'px-5 py-2',
+                  {
+                    'sticky left-10 z-10 bg-blue-200 px-8 text-center font-medium':
+                      checkStickyField(colKey),
+                  },
+                  headerConfigs[i]?.class,
+                ]"
+              >
+                <div class="flex items-center gap-2">
+                  <SmartCopyClipboard
+                    v-if="!!extractColumnConfig(colKey)?.copied"
+                    :text="String(valueData)"
+                  />
+                  <span class="text-gray-700" :class="extractColumnConfig(colKey)?.textClass">{{
+                    valueData
+                  }}</span>
+                </div>
+              </td>
+            </template>
           </tr>
         </tbody>
       </table>

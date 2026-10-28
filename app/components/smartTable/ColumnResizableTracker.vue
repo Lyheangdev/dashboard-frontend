@@ -65,6 +65,7 @@ watch(dynamicWidth, (width) => {
     @pointermove.stop="handlePointerMove"
     @pointerup.stop="handlePointerReleave"
     @pointercancel.stop="handlePointerReleave"
+    @pointerleave.stop="handlePointerReleave"
   >
     <IconColResize class="h-3.5! w-3.5! text-white" :class="[iconClass]" filled />
   </div>

@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 
 @theme {
+  --font-ibm: 'IBM Plex Sans', sans-serif;
   --color-primary: #f3f3f3;
+}
+
+body {
+  font-family: var(--font-ibm);
 }

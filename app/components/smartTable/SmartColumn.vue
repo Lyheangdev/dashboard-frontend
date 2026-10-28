@@ -5,10 +5,16 @@ interface Props {
   columnConfigs: ICollumnAttribute;
   isLastColmn?: boolean;
 }
+
 const props = defineProps<Props>();
-const emiter = defineEmits<{ (event: 'change', dynamicWidth: number): void }>();
 
 const dynamicWidth = ref(props.columnConfigs?.width || 0);
+const sorting = ref<ISortOrder>('asc');
+
+const emiter = defineEmits<{
+  (event: 'change', dynamicWidth: number): void;
+  (event: 'sort', sortOrder: ISortOrder): void;
+}>();
 
 /**
  * @description: Invoked only when user is panning to resize with of the column
@@ -17,6 +23,12 @@ const dynamicWidth = ref(props.columnConfigs?.width || 0);
 const handleColumnWidthResize = (width: number) => {
   dynamicWidth.value = width;
   emiter('change', width);
+};
+
+const handleToggleSorting = () => {
+  if (sorting.value == 'asc') sorting.value = 'desc';
+  else sorting.value = 'asc';
+  emiter('sort', sorting.value);
 };
 </script>
 
@@ -34,7 +46,11 @@ const handleColumnWidthResize = (width: number) => {
       <span class="capitalize" :class="[columnConfigs?.textHeaderClass]">
         {{ columnConfigs?.label }}</span
       >
-      <button v-if="columnConfigs?.sorted" class="cursor-pointer">
+      <button
+        @click.stop="handleToggleSorting"
+        v-if="Boolean(columnConfigs?.sort)"
+        class="flex cursor-pointer items-center gap-0.5"
+      >
         <IconSorting class="mt-0.5 h-3! w-3! stroke-2 text-white/60 hover:text-blue-50" filled />
       </button>
     </div>
