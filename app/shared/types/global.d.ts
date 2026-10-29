@@ -13,11 +13,24 @@ declare global {
   type MenuList = Array<MenuItem & { submenu: Array<Submenu> }>;
 
   // Only use with table column builder
+  interface IScrollTable {
+    isScrollable: ComputedRef<boolean>;
+    scrollLeft: () => void;
+    scrollRight: () => void;
+  }
+
+  type ISortOrder = 'asc' | 'desc';
+  type ISortType = 'string' | 'number' | 'date';
+  type IcollumnSort = {
+    sortType: ISortType;
+  };
+
   interface ICollumnAttribute {
     label: string;
     width: number;
     type: StringConstructor | NumberConstructor | BooleanConstructor;
-    sorted?: boolean;
+    sort?: IcollumnSort;
+    copied?: boolean;
     heanderClass?: string;
     textHeaderClass?: string;
     textClass?: string;
@@ -30,7 +43,7 @@ declare global {
 
   type ICollumnHeader<T extends IColumnsField> = {
     [K in ExtractColumnFiledType<T>]: {
-      key: `col-key-${K}`;
+      key: `${K}`;
     } & ICollumnAttribute;
   };
 
@@ -44,7 +57,10 @@ declare global {
         ? boolean
         : never;
 
-  type ICollumnData<T extends Record<string, ICollumnAttribute>> = {
-    [K in keyof T]: IConstructToType<T[K]['type']> | null;
-  };
+  type ICollumnData<
+    T extends Record<string, ICollumnAttribute>,
+    Extra extends Record<string, unknown> = Record<string, unknown>,
+  > = {
+    [K in keyof T]: IConstructToType<T[K]['type']> | null | undefined;
+  } & Extra;
 }

@@ -3,6 +3,8 @@ export function defineColumnFields<const T extends readonly string[]>(fields: T)
 }
 
 export const isInteractiveElement = (target: EventTarget | null) => {
-  if (!(target instanceof HTMLElement)) return false;
-  return !!target.closest("input,button,select,textarea,option,a,[contenteditable='true']");
+  if (!(target instanceof Element)) return false;
+  return !!target.closest(
+    'button, input, textarea, select, a, [role="button"], [contenteditable="true"]',
+  );
 };
