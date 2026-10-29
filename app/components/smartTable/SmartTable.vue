@@ -1,6 +1,4 @@
 <script setup lang="ts" generic="T extends IColumnsField, K extends ICollumnHeader<T>">
-import IconLoader from '~~/public/icons/loader.svg';
-
 interface Props {
   isLoading?: boolean;
   columnFileds: T;
@@ -8,6 +6,7 @@ interface Props {
   columnsData: ICollumnData<K>[];
 }
 const props = withDefaults(defineProps<Props>(), { isLoading: false });
+const recordIds = ref<Set<number>>(new Set());
 
 /**
  * @description: Hold all columns configuration
@@ -15,6 +14,22 @@ const props = withDefaults(defineProps<Props>(), { isLoading: false });
 const headerConfigs = computed(
   () => Object.values(props.columnsConfig) as ICollumnHeaderValue<T>[],
 );
+
+/**
+ * @description: Extract column config
+ */
+const extractColumnConfig = (key: keyof K) => {
+  const config = props.columnsConfig[key] as ICollumnHeaderValue<T>;
+  return config;
+};
+
+/**
+ * @description: Extract row data
+ */
+const extractRowDataProperty = (row: ICollumnData<K>, key: keyof K) => {
+  const propertyValue = row[key];
+  return propertyValue;
+};
 
 /**
  * @description: Hold as {key: value} -> ex: {id: 230, email: 340}, which 230 & 340 are width
@@ -46,22 +61,30 @@ const handleColumnWidthResize = (key: string, width: number) => {
  * @description: Handle select all table records
  */
 const handleSelectAll = (isChecked: boolean) => {
-  console.log('table check all:', isChecked);
-};
+  if (!isChecked) {
+    recordIds.value.clear();
+    return;
+  }
 
-const handleSelectIndividual = (isChecked: boolean, recordId: number | null) => {
-  alert(recordId)
-  console.log('table individual select:', isChecked);
+  const ids = (props.columnsData || [])
+    .map((data) => {
+      const id = (data as Record<string, unknown>)['id'];
+      return id;
+    })
+    .filter((id) => typeof id === 'number');
+
+  if (!ids?.length) return;
+  recordIds.value = new Set(ids);
 };
 
 /**
- * @description: Parse table id
+ * @description: Handle select each table record
  */
-const parseTableId = (row: ICollumnData<K>) => {
-  const obj = Object.entries(row).forEach(([key, value]) => {
-      //check key
-  })
-} 
+const handleSelectIndividual = (isChecked: boolean, recordId: number | null | undefined) => {
+  if (!recordId) return;
+  if (isChecked) recordIds.value.add(recordId);
+  else recordIds.value.delete(recordId);
+};
 </script>
 
 <template>
@@ -100,32 +123,41 @@ const parseTableId = (row: ICollumnData<K>) => {
             v-for="(row, i) in columnsData"
             :key="i"
             class="border-b border-b-white/70 duration-200 ease-linear last:border-none even:bg-blue-200 hover:bg-blue-400"
+            :class="[
+              {
+                'bg-blue-500 even:bg-blue-500': recordIds.has(
+                  extractRowDataProperty(row, 'id') as number,
+                ),
+              },
+            ]"
           >
             <!--!select individual record  -->
             <td class="borde-r sticky left-0 border-r-white bg-blue-50 text-sm last:border-none">
               <div class="relative flex items-center justify-center">
                 <SmartCheckBox
+                  :is-checked="recordIds.has(extractRowDataProperty(row, 'id') as number)"
                   :disabled="isLoading"
                   @change="
-                    (checked) => handleSelectIndividual(checked, Object.values(row)[0] as number)
+                    (checked) =>
+                      handleSelectIndividual(checked, (row as Record<string, any>)['id'] as number)
                   "
                 />
               </div>
             </td>
 
             <td
-              v-for="(colValue, j) in Object.values(row)"
+              v-for="([colKey, valueData], j) in Object.entries(row)"
               :key="`${i}_${j}`"
               class="border-r border-r-white/70 bg-blue-50/70 text-sm last:border-none"
               :class="[
                 'px-5 py-2',
-                { 'sticky left-10 z-10 bg-blue-100 px-8 text-center font-medium': j == 0 },
+                { 'sticky left-10 z-10 bg-blue-200 px-8 text-center font-medium': j == 0 },
                 headerConfigs[i]?.class,
               ]"
             >
               <div>
-                <span class="text-gray-700" :class="headerConfigs[i]?.textClass">{{
-                  colValue
+                <span class="text-gray-700" :class="extractColumnConfig(colKey)?.textClass">{{
+                  valueData
                 }}</span>
               </div>
             </td>

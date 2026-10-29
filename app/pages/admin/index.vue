@@ -115,7 +115,7 @@ definePageMeta({
       <SmartTable
         :is-loading="true"
         :column-fileds="
-          defineColumnFields(['id', 'email', 'first_name', 'last_name', 'created_at'])
+          defineColumnFields(['id','email', 'first_name', 'last_name', 'created_at'])
         "
         :columns-config="{
           id: {
@@ -155,6 +155,7 @@ definePageMeta({
             type: String,
             width: 180,
             textHeaderClass: 'captalize text-white',
+            textClass: 'text-gray-300 font-normal',
           },
         }"
         :columnsData="[
@@ -163,70 +164,70 @@ definePageMeta({
             email: 'lyheangdev@gmail.com',
             first_name: 'lyheang',
             last_name: 'dev',
-            created_at: '12-09-2026 12:56',
+            created_at: formatUtc('2026-09-12T12:56:00.00000+00:00', 'technical'),
           },
           {
             id: 2,
             email: 'vichetsom@gmail.com',
             first_name: 'vichet',
             last_name: 'som',
-            created_at: '15-09-2026 01:56',
+            created_at: formatUtc('2026-09-15T01:56:00.00000+00:00', 'technical'),
           },
           {
             id: 3,
             email: 'dara.chan@gmail.com',
             first_name: 'dara',
             last_name: 'chan',
-            created_at: '18-09-2026 09:30',
+            created_at: formatUtc('2026-09-18T09:30:00.00000+00:00', 'technical'),
           },
           {
             id: 4,
             email: 'sokha.kim@gmail.com',
             first_name: 'sokha',
             last_name: 'kim',
-            created_at: '20-09-2026 14:45',
+            created_at: formatUtc('2026-09-20T14:45:00.00000+00:00', 'technical'),
           },
           {
             id: 5,
             email: 'bopha.lim@gmail.com',
             first_name: 'bopha',
             last_name: 'lim',
-            created_at: '22-09-2026 08:15',
+            created_at: formatUtc('2026-09-22T08:15:00.00000+00:00', 'technical'),
           },
           {
             id: 6,
             email: 'sopheak.hem@gmail.com',
             first_name: 'sopheak',
             last_name: 'hem',
-            created_at: '24-09-2026 10:20',
+            created_at: formatUtc('2026-09-24T10:20:00.00000+00:00', 'technical'),
           },
           {
             id: 7,
             email: 'chenda.ou@gmail.com',
             first_name: 'chenda',
             last_name: 'ou',
-            created_at: '26-09-2026 13:40',
+            created_at: formatUtc('2026-09-26T13:40:00.00000+00:00', 'technical'),
           },
           {
             id: 8,
             email: 'vanna.chea@gmail.com',
             first_name: 'vanna',
             last_name: 'chea',
-            created_at: '28-09-2026 16:25',
+            created_at: formatUtc('2026-09-28T16:25:00.00000+00:00', 'technical'),
           },
           {
             id: 9,
             email: 'pisey.kong@gmail.com',
             first_name: 'pisey',
             last_name: 'kong',
-            created_at: '30-09-2026 07:50',
+            created_at: formatUtc('2026-09-30T07:50:00.00000+00:00', 'technical'),
           },
           {
             id: 10,
             email: 'rithy.seng@gmail.com',
             first_name: 'rithy',
             last_name: 'seng',
-            created_at: '02-10-2026 11:35',
+            created_at: formatUtc('2026-10-02T11:35:00.00000+00:00', 'technical'),
           },
         ]"
       />

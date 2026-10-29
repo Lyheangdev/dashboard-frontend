@@ -19,6 +19,10 @@ const handleChange = () => {
   checked.value = !checked.value;
   emiter('change', checked.value);
 };
+
+watchEffect(() => {
+  checked.value = !!props.isChecked;
+});
 </script>
 
 <template>
@@ -27,11 +31,12 @@ const handleChange = () => {
       type="checkbox"
       :checked="checked"
       @change="handleChange"
-      class="z-10! size-5 cursor-pointer appearance-none rounded-sm border border-blue-200 bg-white"
+      class="z-10! size-5 cursor-pointer appearance-none rounded-[5px] border border-blue-100"
+      :class="[checked ? 'bg-blue-400' : 'bg-white']"
     />
     <IconCheck
       v-if="checked"
-      class="absolute top-0 right-0 bottom-0 pointer-events-none left-0 z-0! mt-0.5 ml-0.5 size-4! text-blue-500 select-none"
+      class="pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-0! mt-0.5 ml-0.5 size-4! text-white select-none"
       filled
     />
   </div>

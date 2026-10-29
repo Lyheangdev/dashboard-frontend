@@ -24,7 +24,7 @@ declare global {
     class?: string;
   }
 
-  type IColumnsField = readonly string[];
+  type IColumnsField = readonly ['id', ...string[]];
 
   type ExtractColumnFiledType<T extends IColumnsField> = T[number];
 
