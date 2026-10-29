@@ -8,6 +8,7 @@ const handleToggle = () => {
 };
 
 useClickOutSide(dropdownRef, () => {
+  if (!open.value) return;
   open.value = false;
 });
 </script>
