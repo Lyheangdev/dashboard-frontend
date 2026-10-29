@@ -3,6 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "upgrade": "npx nuxt upgrade",
+    "nuxt:clean": "npx nuxt cleanup",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "build": "nuxt build",

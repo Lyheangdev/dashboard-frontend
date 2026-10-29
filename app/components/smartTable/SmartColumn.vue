@@ -40,7 +40,7 @@ const handleToggleSorting = () => {
     class="relative border-r border-white last:border-r-0"
   >
     <div
-      class="reltive flex items-center gap-1 bg-blue-400/90 py-1.5 pr-1 text-start text-sm text-gray-700 uppercase"
+      class="relative flex items-center gap-1 bg-blue-400/90 py-1.5 pr-1 text-start text-sm text-gray-700 uppercase"
       :class="['px-5 py-1', columnConfigs?.heanderClass]"
     >
       <span class="capitalize" :class="[columnConfigs?.textHeaderClass]">

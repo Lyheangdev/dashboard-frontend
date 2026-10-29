@@ -19,21 +19,19 @@ const checkScrollable = () => {
 };
 
 const handlePointerDown = (evt: PointerEvent) => {
+  const currElement = evt.currentTarget as HTMLElement;
   if (!trackerState.isScrollable) return;
   if (isInteractiveElement(evt.target)) return;
-
-  const currElement = evt.currentTarget as HTMLElement;
 
   trackerState.isDragging = true;
   trackerState.initX = evt.clientX;
 
-  //Register capture outside scope of the current target
+  //-- Register capture outside scope of the current target
   currElement.setPointerCapture(evt.pointerId);
 };
 
 const handlePointerMove = (evt: PointerEvent) => {
-  if (isInteractiveElement(evt.target)) return;
-  if (!trackerState.isDragging) return;
+  if (!trackerState.isDragging || isInteractiveElement(evt.target)) return;
 
   trackerState.currentX = evt.clientX;
   const diffX = evt.clientX - trackerState.initX;
@@ -48,11 +46,14 @@ const handlePointerMove = (evt: PointerEvent) => {
 };
 
 const handlePointerReleave = (evt: PointerEvent) => {
-  if (isInteractiveElement(evt.target)) return;
   const currElement = evt.currentTarget as HTMLElement;
+  if (isInteractiveElement(evt.target)) return;
+
   trackerState.isDragging = false;
 
-  //Unregister capture outside scope event
+  checkScrollable();
+
+  //-- Unregister capture outside scope event
   if (currElement.hasPointerCapture(evt.pointerId)) {
     currElement.releasePointerCapture(evt.pointerId);
   }

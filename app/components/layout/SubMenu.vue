@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import IconSearch from '~~/public/icons/search.svg'
+import IconSearch from '~~/public/icons/search.svg';
 
-const isCollapse = inject(COLLAPSE_KEY)
-const props = defineProps<{ menu: Menu | undefined }>()
+const isCollapse = inject(COLLAPSE_KEY);
+const props = defineProps<{ menu: Menu | undefined }>();
 </script>
 
 <template>
@@ -24,16 +24,40 @@ const props = defineProps<{ menu: Menu | undefined }>()
         />
       </div>
       <div class="bg-primary mx-auto h-px w-5/6" />
+
       <div class="px-4 py-2">
         <div v-for="m in menu?.submenu || []" :key="m.key" class="py-3">
-          <p v-if="m?.label" class="text-sm font-semibold text-gray-400">{{ m?.label }}</p>
-          <Transition name="fade" mode="out-in" appear>
-            <div
-              :key="menu?.key"
-              class="mt-4 flex w-fit flex-col gap-4 border-l border-l-black/10 py-1.5 pl-4"
-            >
-              <div v-for="sm in m?.subitems || []" :key="sm?.key">
-                <p v-if="sm?.label" class="text-sm font-medium text-gray-600">{{ sm.label }}</p>
+          <Transition :key="m.key" name="fade" mode="out-in" appear>
+            <div>
+              <p
+                v-if="m?.label"
+                class="relative border-l-2 border-l-blue-100 pl-3 text-sm font-semibold text-gray-600"
+                :class="[
+                  'after:content-[] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-5 after:origin-left after:translate-x-[-1.3px] after:rotate-[53.13deg] after:rounded-l-xs after:bg-blue-100',
+                ]"
+              >
+                {{ m?.label }}
+              </p>
+
+              <div :key="menu?.key" class="mt-3.5 ml-3 flex w-fit flex-col">
+                <div
+                  v-for="(sm, i) in m?.subitems || []"
+                  :key="sm?.key"
+                  class="group/submenu relative py-1.5 pl-4 before:absolute before:top-0 before:bottom-0 before:left-0 before:w-0.5 before:bg-blue-100 before:content-[''] hover:before:bg-blue-400! hover:before:transition-colors hover:before:duration-500"
+                  :class="[
+                    { 'font-medium before:bg-blue-500!': sm?.href == $route.path },
+                    { 'before:rounded-tr-xs': i === 0 },
+                  ]"
+                >
+                  <NuxtLink
+                    v-if="sm?.label"
+                    :to="sm?.href"
+                    class="ease cursor-pointer text-sm text-gray-500 transition-colors duration-300 group-hover/submenu:text-blue-500"
+                    :class="[{ 'text-blue-500!': sm?.href == $route.path }]"
+                  >
+                    {{ sm?.label }}
+                  </NuxtLink>
+                </div>
               </div>
             </div>
           </Transition>

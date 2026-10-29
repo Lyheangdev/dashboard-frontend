@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import IconCollapse from '~~/public/icons/chevron-collapse.svg'
+import IconCollapse from '~~/public/icons/chevron-collapse.svg';
 
-import IconDashboard from '~~/public/dashboard/dashboar-home.svg'
-import IconSettings from '~~/public/dashboard/settings.svg'
-import IconReports from '~~/public/dashboard/reports.svg'
-import IconDatabase from '~~/public/icons/database.svg'
-import IconLogging from '~~/public/icons/logging.svg'
-import IconClock from '~~/public/icons/clock.svg'
-import IconHistory from '~~/public/icons/history.svg'
+import IconDashboard from '~~/public/dashboard/dashboar-home.svg';
+import IconSettings from '~~/public/dashboard/settings.svg';
+import IconReports from '~~/public/dashboard/reports.svg';
+import IconDatabase from '~~/public/icons/database.svg';
+import IconLogging from '~~/public/icons/logging.svg';
+import IconClock from '~~/public/icons/clock.svg';
+import IconHistory from '~~/public/icons/history.svg';
 
 const menu: MenuList = [
   {
@@ -78,16 +78,16 @@ const menu: MenuList = [
           {
             key: 'submenu-customer-key',
             label: 'Manage customer',
-            href: '#',
+            href: '/customer',
           },
           {
             key: 'submenu-line-owner-key',
             label: 'Manage Line Owner',
-            href: '#',
+            href: '/line-owner',
           },
           {
             key: 'submenu-dashboard-key',
-            label: 'Manage Smart Dashboard',
+            label: 'Manage Dashboard',
             href: '#',
           },
         ],
@@ -129,12 +129,17 @@ const menu: MenuList = [
           {
             key: 'submenu-manage-role-key',
             label: 'Manage Role',
-            href: '#',
+            href: ROUTE.$settings('/settings/roles'),
           },
           {
             key: 'submenu-manage-permission-key',
             label: 'Manage Permission',
-            href: '#',
+            href: ROUTE.$settings('/settings/permissions'),
+          },
+          {
+            key: 'submenu-config-role-permission-key',
+            label: 'Config Role & Permission',
+            href: ROUTE.$settings('/settings/config-role-permission'),
           },
         ],
       },
@@ -144,8 +149,13 @@ const menu: MenuList = [
         subitems: [
           {
             key: 'submenu-manage-user-key',
-            label: 'Manage User',
-            href: '#',
+            label: 'Manage Users',
+            href: ROUTE.$settings('/settings/users'),
+          },
+          {
+            key: 'submenu-bind-user-key',
+            label: 'Manage User Access',
+            href: ROUTE.$settings('/settings/link-access'),
           },
         ],
       },
@@ -162,26 +172,26 @@ const menu: MenuList = [
       },
     ],
   },
-]
+];
 
-const activeMenu = ref<Menu>()
-const isCollapse = ref(false)
+const activeMenu = ref<Menu>();
+const isCollapse = ref(false);
 
 const handleToggleCollapse = () => {
-  isCollapse.value = !isCollapse.value
-}
+  isCollapse.value = !isCollapse.value;
+};
 
 const handleMenuClick = (key: string) => {
-  const currentMenu = (menu || []).find((m) => m?.key == key)
-  if (!currentMenu) return
-  activeMenu.value = currentMenu
-}
+  const currentMenu = (menu || []).find((m) => m?.key == key);
+  if (!currentMenu) return;
+  activeMenu.value = currentMenu;
+};
 
-provide(COLLAPSE_KEY, isCollapse)
+provide(COLLAPSE_KEY, isCollapse);
 
 onMounted(() => {
-  activeMenu.value = menu[0]
-})
+  activeMenu.value = menu[0];
+});
 </script>
 
 <template>
@@ -196,7 +206,7 @@ onMounted(() => {
       <SubMenu :menu="activeMenu" />
 
       <button
-        class="ease absolute top-0 right-0 translate-3/5 cursor-pointer transition-transform duration-150"
+        class="ease absolute top-0 right-0 z-30 translate-3/5 cursor-pointer transition-transform duration-150"
         :class="{
           'rotate-180': isCollapse,
         }"
@@ -211,9 +221,13 @@ onMounted(() => {
         />
       </button>
     </div>
-    <div class="relative grow overflow-hidden">
+
+    <div
+      class="relative flex max-h-screen grow scrollbar-none flex-col overflow-y-auto scroll-smooth"
+    >
       <slot />
     </div>
+
     <div class="h-screen max-h-screen max-w-96 bg-white px-5 py-3.5">
       <div class="pb-2.5">
         <div class="flex items-center gap-2">
