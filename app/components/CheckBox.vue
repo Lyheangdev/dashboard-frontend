@@ -32,7 +32,7 @@ watchEffect(() => {
       :checked="checked"
       @change="handleChange"
       class="z-10! size-5 cursor-pointer appearance-none rounded-[5px] border border-blue-300"
-      :class="[checked ? 'bg-blue-400 border-0! border-none!' : 'bg-white']"
+      :class="[checked ? 'border-0! border-none! bg-blue-400' : 'bg-white']"
     />
     <IconCheck
       v-if="checked"

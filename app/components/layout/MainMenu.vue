@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import IconEarthLogo from '~~/public/icons/globe-logo.svg'
-import IconLogout from '~~/public/icons/logout.svg'
+import IconEarthLogo from '~~/public/icons/globe-logo.svg';
+import IconLogout from '~~/public/icons/logout.svg';
 
-defineProps<{ activeMenuKey: string; menu: MenuList }>()
+defineProps<{ activeMenuKey: string; menu: MenuList }>();
 defineEmits<{
-  (e: 'click', key: string): void
-}>()
+  (e: 'click', key: string): void;
+}>();
 </script>
 
 <template>

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import CircleProgressBar from '~/components/CircleProgressBar.vue'
-import IconLogo from '~~/public/icons/logo.svg'
-import IconLineRunning from '~~/public/icons/line_running.svg'
-import IconLineUp from '~~/public/icons/chart/line_up.svg'
-import IconChevronLeft from '~~/public/icons/chevron-left.svg'
-import IconChevronRight from '~~/public/icons/chevron-right.svg'
-import IconFilter from '~~/public/icons/filter.svg'
-import IconProductity from '~~/public/icons/productivity.svg'
-import IconProductionLine from '~~/public/icons/lines.svg'
-import IconProject from '~~/public/icons/project.svg'
-import IconUsers from '~~/public/icons/users.svg'
-import IconSync from '~~/public/icons/sync.svg'
-import IconTag from '~~/public/icons/tag.svg'
+import CircleProgressBar from '~/components/CircleProgressBar.vue';
+import IconLogo from '~~/public/icons/logo.svg';
+import IconLineRunning from '~~/public/icons/line_running.svg';
+import IconLineUp from '~~/public/icons/chart/line_up.svg';
+import IconChevronLeft from '~~/public/icons/chevron-left.svg';
+import IconChevronRight from '~~/public/icons/chevron-right.svg';
+import IconFilter from '~~/public/icons/filter.svg';
+import IconProductity from '~~/public/icons/productivity.svg';
+import IconProductionLine from '~~/public/icons/lines.svg';
+import IconProject from '~~/public/icons/project.svg';
+import IconUsers from '~~/public/icons/users.svg';
+import IconSync from '~~/public/icons/sync.svg';
+import IconTag from '~~/public/icons/tag.svg';
 </script>
 
 <template>

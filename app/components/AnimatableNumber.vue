@@ -1,21 +1,21 @@
 <script setup lang="ts">
 const props = defineProps<{
-  value: number
-}>()
+  value: number;
+}>();
 
-const value = ref(0)
+const value = ref(0);
 
-let timtout: ReturnType<typeof window.setTimeout> | null = null
+let timtout: ReturnType<typeof window.setTimeout> | null = null;
 
 onMounted(() => {
   timtout = setTimeout(() => {
-    value.value = props.value
-  }, 100)
-})
+    value.value = props.value;
+  }, 100);
+});
 
 onBeforeUnmount(() => {
-  window.clearTimeout(timtout!)
-})
+  window.clearTimeout(timtout!);
+});
 </script>
 
 <template>

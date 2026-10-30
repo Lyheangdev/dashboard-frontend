@@ -9,6 +9,13 @@ export default defineNuxtConfig({
   components: [{ path: '~/components', pathPrefix: false, global: false }],
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: [
+        '@number-flow/vue',
+        '@vue/devtools-core',
+        'dayjs', 
+      ]
+    }
   },
   modules: ['@nuxt/image', 'nuxt-svgo', '@nuxt/fonts'],
   svgo: { dts: true },
@@ -17,7 +24,7 @@ export default defineNuxtConfig({
       {
         name: 'IBM Plex Sans',
         provider: 'google',
-        weights: ['100','200','300','400','500','600','700'],
+        weights: ['100', '200', '300', '400', '500', '600', '700'],
       },
     ],
   },

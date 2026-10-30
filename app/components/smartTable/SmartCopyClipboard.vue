@@ -13,10 +13,7 @@ const copyToClipboard = async (text: string) => {
 </script>
 
 <template>
-  <button
-    @click.stop="() => copyToClipboard(text)"
-    class="cursor-pointer rounded-sm"
-  >
+  <button @click.stop="() => copyToClipboard(text)" class="cursor-pointer rounded-sm">
     <IconClipboard
       class="size-4! text-blue-400/70 transition-all duration-200 hover:scale-110 hover:text-gray-600"
       filled

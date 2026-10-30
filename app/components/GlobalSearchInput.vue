@@ -1,27 +1,27 @@
 [7/10/26 11:42 AM] Lyheang:
 <script setup lang="ts">
-import IconSearch from '~~/public/icons/search.svg'
-const open = ref(false)
+import IconSearch from '~~/public/icons/search.svg';
+const open = ref(false);
 
-const searchTerm = ref('')
+const searchTerm = ref('');
 
 const emit = defineEmits<{
-  (e: 'search', value: string): void
-}>()
+  (e: 'search', value: string): void;
+}>();
 
 const handleClose = () => {
-  open.value = false
-}
+  open.value = false;
+};
 
 const handleOpen = () => {
-  open.value = true
-}
+  open.value = true;
+};
 
 const handleSearch = (event: KeyboardEvent) => {
-  const element = event.target as HTMLInputElement
-  handleOpen()
-  emit('search', element.value)
-}
+  const element = event.target as HTMLInputElement;
+  handleOpen();
+  emit('search', element.value);
+};
 </script>
 
 <template>

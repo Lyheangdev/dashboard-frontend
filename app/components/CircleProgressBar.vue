@@ -47,11 +47,11 @@
 
 <script setup lang="ts">
 interface Props {
-  size?: number
-  percent?: number
-  fontSize?: string
-  color?: string
-  duration?: number
+  size?: number;
+  percent?: number;
+  fontSize?: string;
+  color?: string;
+  duration?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -60,63 +60,63 @@ const props = withDefaults(defineProps<Props>(), {
   fontSize: '24px',
   color: 'text-blue-500',
   duration: 1000,
-})
+});
 
-const radius = 45
-const dashArray = 2 * Math.PI * radius
+const radius = 45;
+const dashArray = 2 * Math.PI * radius;
 
-const animatedPercent = ref(0)
+const animatedPercent = ref(0);
 
 const targetPercent = computed(() => {
-  return Math.min(Math.max(props.percent, 0), 100)
-})
+  return Math.min(Math.max(props.percent, 0), 100);
+});
 
 const dashOffset = computed(() => {
-  return dashArray * (1 - animatedPercent.value / 100)
-})
+  return dashArray * (1 - animatedPercent.value / 100);
+});
 
-let animationFrame: number | null = null
+let animationFrame: number | null = null;
 
 const animate = () => {
-  const start = animatedPercent.value
-  const end = targetPercent.value
-  const startTime = performance.now()
+  const start = animatedPercent.value;
+  const end = targetPercent.value;
+  const startTime = performance.now();
 
   const update = (currentTime: number) => {
-    const elapsed = currentTime - startTime
-    const progress = Math.min(elapsed / props.duration, 1)
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / props.duration, 1);
 
     // Ease-out
-    const eased = 1 - Math.pow(1 - progress, 3)
+    const eased = 1 - Math.pow(1 - progress, 3);
 
-    animatedPercent.value = start + (end - start) * eased
+    animatedPercent.value = start + (end - start) * eased;
 
     if (progress < 1) {
-      animationFrame = requestAnimationFrame(update)
+      animationFrame = requestAnimationFrame(update);
     }
-  }
+  };
 
   if (animationFrame !== null) {
-    cancelAnimationFrame(animationFrame)
+    cancelAnimationFrame(animationFrame);
   }
 
-  animationFrame = requestAnimationFrame(update)
-}
+  animationFrame = requestAnimationFrame(update);
+};
 
 onMounted(() => {
-  animate()
-})
+  animate();
+});
 
 watch(
   () => props.percent,
   () => {
-    animate()
+    animate();
   },
-)
+);
 
 onBeforeUnmount(() => {
   if (animationFrame !== null) {
-    cancelAnimationFrame(animationFrame)
+    cancelAnimationFrame(animationFrame);
   }
-})
+});
 </script>

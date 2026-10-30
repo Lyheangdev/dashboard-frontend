@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import IconClock24 from '~~/public/icons/clock24.svg'
+import IconClock24 from '~~/public/icons/clock24.svg';
 
-const clock = reactive({ hours: '00', minutes: '00', seconds: '00' })
-const intervalRef = shallowRef<number>(null!)
+const clock = reactive({ hours: '00', minutes: '00', seconds: '00' });
+const intervalRef = shallowRef<number>(null!);
 
 function recuringClock() {
-  const date = new Date()
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  const seconds = String(date.getSeconds()).padStart(2, '0')
+  const date = new Date();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
 
-  clock.hours = hours
-  clock.minutes = minutes
-  clock.seconds = seconds
+  clock.hours = hours;
+  clock.minutes = minutes;
+  clock.seconds = seconds;
 }
 
 onMounted(() => {
-  recuringClock()
-  intervalRef.value = window.setInterval(recuringClock, 1000)
-})
+  recuringClock();
+  intervalRef.value = window.setInterval(recuringClock, 1000);
+});
 
 onBeforeUnmount(() => {
-  window.clearInterval(intervalRef.value)
-})
+  window.clearInterval(intervalRef.value);
+});
 </script>
 
 <template>

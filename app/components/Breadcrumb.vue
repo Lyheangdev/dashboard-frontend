@@ -20,7 +20,11 @@ console.log(paths.value);
 <template>
   <div class="relative flex items-center gap-1">
     <div v-for="(pathObj, i) in paths" :key="i" class="flex items-center gap-1">
-      <NuxtLink :to="pathObj?.path" class="text-sm text-gray-400" :class="[{'text-blue-400! font-medium' : pathObj?.path == $route.path}]">
+      <NuxtLink
+        :to="pathObj?.path"
+        class="text-sm text-gray-400"
+        :class="[{ 'font-medium text-blue-400!': pathObj?.path == $route.path }]"
+      >
         {{ pathObj?.label }}
       </NuxtLink>
       <IconChevronRight
