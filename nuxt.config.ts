@@ -10,14 +10,13 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: [
-        '@number-flow/vue',
-        '@vue/devtools-core',
-        'dayjs', 
-      ]
-    }
+      include: ['@number-flow/vue', '@vue/devtools-core', 'dayjs'],
+    },
   },
-  modules: ['@nuxt/image', 'nuxt-svgo', '@nuxt/fonts'],
+  modules: ['@nuxt/image', 'nuxt-svgo', '@nuxt/fonts', '@pinia/nuxt'],
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
   svgo: { dts: true },
   fonts: {
     families: [
