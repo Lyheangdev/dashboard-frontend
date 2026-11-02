@@ -3,6 +3,8 @@ import IconSearch from '~~/public/icons/search.svg';
 
 const isCollapse = inject(COLLAPSE_KEY);
 const props = defineProps<{ menu: Menu | undefined }>();
+
+const { user } = useAuthStore();
 </script>
 
 <template>
@@ -75,8 +77,10 @@ const props = defineProps<{ menu: Menu | undefined }>();
             />
           </div>
           <div class="flex flex-col">
-            <p class="text-[13px] font-medium text-gray-700">lyheangdev@gmail.com</p>
-            <p class="text-xs text-gray-400">Administrator</p>
+            <p class="text-[13px] font-medium text-gray-700">
+              {{ user?.email ? user.email : 'Anonymous' }}
+            </p>
+            <p class="text-xs text-gray-400">{{ user?.role ? user.role : 'Unassigned Role' }}</p>
           </div>
         </div>
       </div>
@@ -89,14 +93,14 @@ const props = defineProps<{ menu: Menu | undefined }>();
 .slideX-leave-active {
   overflow: hidden;
   transition:
-    width 0.15s linear,
-    opacity 0.1s linear;
+    width 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .slideX-leave-active {
   transition:
-    opacity 0.1s linear,
-    width 0.15s linear 0.15s;
+    opacity 0.2s ease,
+    width 0.2s ease 0.15s;
 }
 
 .slideX-leave-to {
@@ -106,8 +110,8 @@ const props = defineProps<{ menu: Menu | undefined }>();
 
 .slideX-enter-active {
   transition:
-    width 0.15s linear,
-    opacity 0.2s linear 0.15s;
+    width 0.22s ease,
+    opacity 0.2s ease 0.15s;
 }
 
 .slideX-enter-from {
@@ -126,8 +130,8 @@ const props = defineProps<{ menu: Menu | undefined }>();
 .fade-enter-active,
 .fade-leave-active {
   transition:
-    opacity 0.2s ease,
-    transform 0.4s ease;
+    opacity 0.1 ease,
+    transform 0.1s ease;
 }
 
 .fade-enter-from,

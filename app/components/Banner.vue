@@ -6,7 +6,7 @@ import IconTickForSuccess from '~~/public/icons/form/success.svg';
 
 interface BannerProps {
   open?: boolean;
-  type?: 'ban' | 'warning' | 'error' | 'success';
+  type?: BannerType;
   message: string;
 }
 

@@ -5,8 +5,7 @@ import IconOff from '~~/public/icons/eye-off.svg';
 import IconOpen from '~~/public/icons/eye-open.svg';
 import IconLoginLogo from '~~/public/icons/login-logo.svg';
 import IconLoader from '~~/public/icons/loader.svg';
-import IconWarningTriangle from '~~/public/icons/form/warning-triangle.svg';
-import IconShield from '~~/public/icons/form/shield.svg';
+import { FetchError } from 'ofetch';
 
 import { useField, useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
@@ -16,10 +15,16 @@ definePageMeta({
   layout: 'auth',
 });
 
-const formState = reactive({ loading: false, error: false, msg: '' });
+const formState = reactive<{
+  loading: boolean;
+  error: boolean;
+  msg: string;
+  errorType: BannerType;
+}>({ loading: false, error: false, msg: '', errorType: 'success' });
 const eyeCheck = ref(false);
 
-// Login logic
+const { setUser } = useAuthStore();
+
 const loginValidationSchema = toTypedSchema(
   z.object({
     email: z
@@ -50,9 +55,18 @@ type ISingleResponse<T> = {
   data: T;
 };
 
+type ISingleReponseError<T> = ISingleResponse<T> & {
+  error: {
+    code: string;
+    details: null;
+    message: string | null;
+  };
+};
+
 interface IUser {
   id: number;
   full_name?: string;
+  email?: string;
   bio?: string;
   profile_url?: string;
   role: string;
@@ -74,23 +88,50 @@ const onSubmit = handleSubmit(async (formData) => {
       'http://localhost:8000/api/v1/auth/login',
       {
         method: 'POST',
-        body: JSON.stringify({
+        body: {
           email: formData.email,
           password: formData.password,
-        }),
+        },
         credentials: 'include',
       },
     );
 
-    if (response?.status != 'success') {
-      formState.error = true;
-      formState.msg = response?.message;
-    } else {
-      console.log(response);
-    }
+    setUser({
+      id: response?.data?.id,
+      email: response?.data?.email,
+      bio: response?.data?.bio,
+      full_name: response?.data?.full_name,
+      profile_url: response?.data?.profile_url,
+      isBanned: response?.data?.isBanned,
+      status: response?.data?.status,
+      role: response?.data?.role,
+      permissions: response?.data?.permissions,
+    });
+    await navigateTo('/admin');
   } catch (err) {
     formState.error = true;
-    formState.msg = err instanceof Error ? err?.message : 'Unknow error';
+
+    if (err instanceof FetchError) {
+      const errorReponse = err.data as ISingleReponseError<null>;
+      switch (errorReponse?.error?.code) {
+        case '400':
+        case '401':
+        case '404':
+        case '405':
+        case '409':
+        case '429':
+          formState.errorType = 'error';
+          break;
+        case '403':
+          formState.errorType = 'ban';
+          break;
+        default:
+          break;
+      }
+      formState.msg = errorReponse?.error?.message || 'Unknow error!';
+    } else if (err instanceof Error) {
+      formState.msg = err?.message || 'Unknow error!';
+    }
   } finally {
     formState.loading = false;
   }
@@ -120,7 +161,7 @@ const hanldeTogglePassword = () => {
         <div class="mt-4 h-px w-full bg-gray-200/80" />
 
         <div class="mt-4 flex flex-col gap-8 py-2">
-          <Banner :open="formState.error" type="error" :message="formState.msg" />
+          <Banner :open="formState.error" :type="formState.errorType" :message="formState.msg" />
 
           <div class="flex flex-col gap-2.5">
             <!-- Email input -->
@@ -157,7 +198,7 @@ const hanldeTogglePassword = () => {
                 ]"
               >
                 <div class="rounded-md bg-blue-400 p-1.5">
-                  <IconKey class="size-4! text-white" filled />
+                  <IconKey class="size-4.5! text-white" filled />
                 </div>
 
                 <input
@@ -169,6 +210,7 @@ const hanldeTogglePassword = () => {
                 />
 
                 <button
+                  type="button"
                   @click.stop="hanldeTogglePassword"
                   class="absolute top-1/2 right-4 -translate-y-1/2"
                 >
@@ -184,7 +226,7 @@ const hanldeTogglePassword = () => {
 
           <!-- Submit button -->
           <button
-            type="button"
+            type="submit"
             class="flex w-full cursor-pointer items-center justify-center rounded-lg bg-blue-400 py-2.5 font-medium text-gray-100 transition-colors duration-300 ease-linear hover:bg-blue-500"
           >
             <div v-if="formState.loading" class="flex items-center gap-1.5">

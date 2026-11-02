@@ -8,6 +8,9 @@ declare global {
     href?: string;
   }
 
+  // Banner type
+  type BannerType = 'ban' | 'warning' | 'error' | 'success';
+
   type Submenu = MenuItem & { subitems: Array<MenuItem> };
   type Menu = MenuItem & { submenu: Array<Submenu> };
   type MenuList = Array<MenuItem & { submenu: Array<Submenu> }>;

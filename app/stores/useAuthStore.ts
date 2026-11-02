@@ -1,11 +1,15 @@
 import { defineStore } from 'pinia';
 
 interface IUser {
-  first_name?: string;
-  last_name?: string;
-  email: string;
+  id?: number;
+  full_name?: string;
+  email?: string;
   bio?: string;
   profile_url?: string;
+  role?: string;
+  isBanned?: boolean;
+  status?: number;
+  permissions?: string[];
 }
 
 interface IAuthState {
@@ -21,7 +25,7 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     fullName: (state): string => {
       if (!state?.user) return '';
-      return `${state?.user?.first_name} ${state?.user?.last_name}`;
+      return state?.user?.full_name || '';
     },
   },
   actions: {

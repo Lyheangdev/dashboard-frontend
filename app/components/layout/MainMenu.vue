@@ -6,6 +6,49 @@ defineProps<{ activeMenuKey: string; menu: MenuList }>();
 defineEmits<{
   (e: 'click', key: string): void;
 }>();
+
+type ISingleResponse<T> = {
+  status: string;
+  message: string;
+  data: T;
+};
+
+type ISingleReponseError<T> = ISingleResponse<T> & {
+  error: {
+    code: string;
+    details: null;
+    message: string | null;
+  };
+};
+
+interface IUser {
+  id: number;
+  full_name?: string;
+  email?: string;
+  bio?: string;
+  profile_url?: string;
+  role: string;
+  isBanned: boolean;
+  status: number;
+  code: string;
+  permissions: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+const { clearnAuth } = useAuthStore();
+
+const handleLogout = async () => {
+  try {
+    await $fetch<ISingleResponse<IUser>>('http://localhost:8000/api/v1/auth/logout', {
+      credentials: 'include',
+    });
+    clearnAuth();
+    await navigateTo('/admin/login');
+  } catch (error) {
+    await navigateTo('/admin/login');
+  }
+};
 </script>
 
 <template>
@@ -25,7 +68,7 @@ defineEmits<{
         <component :is="m.icon" class="size-6! text-gray-100!" filled />
       </div>
     </nav>
-    <button class="group absolute bottom-6 cursor-pointer">
+    <button @click.stop="handleLogout" class="group absolute bottom-6 cursor-pointer">
       <IconLogout class="ease size-6! text-white duration-300 group-hover:text-gray-300" filled />
     </button>
   </div>

@@ -8,6 +8,7 @@ import IconDatabase from '~~/public/icons/database.svg';
 import IconLogging from '~~/public/icons/logging.svg';
 import IconClock from '~~/public/icons/clock.svg';
 import IconHistory from '~~/public/icons/history.svg';
+import IconClose from '~~/public/icons/close.svg';
 
 const menu: MenuList = [
   {
@@ -174,11 +175,31 @@ const menu: MenuList = [
   },
 ];
 
+const accesshistory = [
+  {
+    time: '2026-09-24 10:30:34',
+    user: 'superadmin@sviaec.com',
+  },
+  {
+    time: '2026-09-24 13:30:34',
+    user: 'vichetsome@sviaec.com',
+  },
+  {
+    time: '2026-09-25 08:30:34',
+    user: 'chanmonica@sviaec.com',
+  },
+];
+
 const activeMenu = ref<Menu>();
 const isCollapse = ref(false);
+const isCollapseHistory = ref(true);
 
 const handleToggleCollapse = () => {
   isCollapse.value = !isCollapse.value;
+};
+
+const handleToggleCollapseHistory = () => {
+  isCollapseHistory.value = !isCollapseHistory.value;
 };
 
 const handleMenuClick = (key: string) => {
@@ -188,6 +209,7 @@ const handleMenuClick = (key: string) => {
 };
 
 provide(COLLAPSE_KEY, isCollapse);
+provide(COLLAPSE_HISTORY_KEY, isCollapseHistory);
 
 onMounted(() => {
   activeMenu.value = menu[0];
@@ -228,33 +250,45 @@ onMounted(() => {
       <slot />
     </div>
 
-    <div class="h-screen max-h-screen max-w-96 bg-white px-5 py-3.5">
+    <div v-if="isCollapseHistory" class="h-screen max-h-screen max-w-52 min-w-52 bg-white py-3.5">
       <div class="pb-2.5">
-        <div class="flex items-center gap-2">
-          <div class="rounded-full bg-blue-400/10 p-0.5">
-            <IconHistory class="size-6! text-blue-400" filled />
+        <div class="relative flex items-center gap-2 px-3">
+          <div class="rounded-lg bg-blue-400/10 p-1">
+            <IconHistory class="size-5! text-blue-400" filled />
           </div>
           <div>
             <h4 class="text-sm font-semibold text-gray-700">System History</h4>
-            <p class="text-[10px] text-gray-500">Reatime 50 latest access</p>
-          </div>
-        </div>
-        <div class="my-2 h-px w-full bg-gray-200" />
-        <div class="flex flex-col gap-3">
-          <div class="flex gap-1.5 border-l border-dashed border-gray-200 pl-2">
-            <IconClock class="mt-1 size-4! text-gray-400" filled />
-            <div>
-              <p class="text-xs text-gray-600 lowercase">Lyheangdev@gmail.com</p>
-              <p class="text-xs text-gray-400">11-09-2026 11:30:45</p>
-            </div>
+            <p class="text-[10px] text-gray-500">Last user 20 accesses</p>
           </div>
 
-          <div class="flex gap-1.5 border-l border-dashed border-gray-200 pl-2">
-            <IconClock class="mt-1 size-4! text-gray-400" filled />
-            <div>
-              <p class="text-xs text-gray-600 lowercase">vichetsom@gmail.com</p>
-              <p class="text-xs text-gray-400">11-09-2026 11:30:45</p>
+          <button
+            @click.stop="handleToggleCollapseHistory"
+            class="absolute top-1 right-2.5 cursor-pointer"
+          >
+            <IconClose class="size-5! text-blue-400" filled />
+          </button>
+        </div>
+
+        <div class="my-2 h-px w-full bg-gray-200/60" />
+
+        <div class="mt-1.5 flex flex-col gap-3 px-2">
+          <div
+            v-for="(history, i) in accesshistory"
+            :key="history.user"
+            class="relative flex flex-col py-1.5 pr-2 pl-10"
+          >
+            <div
+              class="absolute top-1.5 left-2 flex size-5 items-center justify-center rounded-full bg-blue-300"
+            >
+              <!-- <div class="z-10 size-2 rounded-full bg-white" /> -->
+              <IconClock class="z-10 m-0.5 size-3.5! text-white" filled />
+              <div
+                v-if="i != accesshistory.length - 1"
+                class="absolute top-1/2 z-0 h-12 w-px border-r border-dashed border-r-gray-300/80 text-gray-700"
+              />
             </div>
+            <p class="text-[11px] text-gray-400">{{ history.time }}</p>
+            <p class="text-[11px] text-gray-700">{{ history.user }}</p>
           </div>
         </div>
       </div>
