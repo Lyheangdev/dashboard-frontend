@@ -15,15 +15,16 @@ const menu: MenuList = [
     key: 'menu-dashboard-key',
     label: 'Dashboard',
     icon: IconDashboard,
+    href: ROUTE.$dashboard('/dashboard/summury'),
     submenu: [
       {
-        key: 'section-layout-dashboard-key',
-        label: 'Layout Dashboard',
+        key: 'section-overview-summury-key',
+        label: 'Overview Summary',
         subitems: [
           {
-            key: 'submenu-home-key',
-            label: 'Home',
-            href: '#',
+            key: 'submenu-dashboard-key',
+            label: 'Dashboard',
+            href: ROUTE.$dashboard('/dashboard/summury'),
           },
         ],
       },
@@ -33,6 +34,7 @@ const menu: MenuList = [
     key: 'menu-input-yield-key',
     label: 'Input Yield',
     icon: IconReports,
+    href: ROUTE.$yield('/yield/input'),
     submenu: [
       {
         key: 'section-tracking-input-key',
@@ -41,7 +43,7 @@ const menu: MenuList = [
           {
             key: 'submenu-input-yield-key',
             label: 'Input Yield',
-            href: '#',
+            href: ROUTE.$yield('/yield/input'),
           },
         ],
       },
@@ -51,6 +53,7 @@ const menu: MenuList = [
     key: 'menu-manage-resource-key',
     label: 'Manage Resource',
     icon: IconDatabase,
+    href: ROUTE.$miscellaneous('/miscellaneous/line'),
     submenu: [
       {
         key: 'section-miscellaneous-key',
@@ -59,37 +62,32 @@ const menu: MenuList = [
           {
             key: 'submenu-line-key',
             label: 'Manage Line',
-            href: '#',
+            href: ROUTE.$miscellaneous('/miscellaneous/line'),
           },
           {
-            key: 'submenu-line-status-key',
-            label: 'Manage Line Status',
-            href: '#',
+            key: 'submenu-project-line-key',
+            label: 'Manage Project Line',
+            href: ROUTE.$miscellaneous('/miscellaneous/project-line'),
           },
           {
             key: 'submenu-project-key',
             label: 'Manage Project',
-            href: '#',
+            href: ROUTE.$miscellaneous('/miscellaneous/project'),
           },
           {
             key: 'submenu-workorder-key',
             label: 'Manage Workorder',
-            href: '#',
+            href: ROUTE.$miscellaneous('/miscellaneous/workorder'),
           },
           {
             key: 'submenu-customer-key',
             label: 'Manage customer',
-            href: '/customer',
+            href: ROUTE.$miscellaneous('/miscellaneous/customer'),
           },
           {
             key: 'submenu-line-owner-key',
             label: 'Manage Line Owner',
-            href: '/line-owner',
-          },
-          {
-            key: 'submenu-dashboard-key',
-            label: 'Manage Dashboard',
-            href: '#',
+            href: ROUTE.$miscellaneous('/miscellaneous/line-owner'),
           },
         ],
       },
@@ -99,6 +97,7 @@ const menu: MenuList = [
     key: 'menu-logging-key',
     label: 'Logging',
     icon: IconLogging,
+    href: ROUTE.$log('/log/operation-log'),
     submenu: [
       {
         key: 'section-logging-key',
@@ -107,12 +106,12 @@ const menu: MenuList = [
           {
             key: 'submenu-operation-logging-key',
             label: 'Operation Logging',
-            href: '#',
+            href: ROUTE.$log('/log/operation-log'),
           },
           {
             key: 'submenu-error-logging-key',
             label: 'Error Logging',
-            href: '#',
+            href: ROUTE.$log('/log/error-log'),
           },
         ],
       },
@@ -122,6 +121,7 @@ const menu: MenuList = [
     key: 'menu-setting-key',
     label: 'Settings',
     icon: IconSettings,
+    href: ROUTE.$settings('/settings/roles'),
     submenu: [
       {
         key: 'section-permission-privilege-key',
@@ -190,9 +190,13 @@ const accesshistory = [
   },
 ];
 
-const activeMenu = ref<Menu>();
+const activeMenu = ref<Menu | null>();
+
 const isCollapse = ref(false);
 const isCollapseHistory = ref(true);
+
+const route = useRoute();
+const router = useRouter();
 
 const handleToggleCollapse = () => {
   isCollapse.value = !isCollapse.value;
@@ -202,17 +206,33 @@ const handleToggleCollapseHistory = () => {
   isCollapseHistory.value = !isCollapseHistory.value;
 };
 
-const handleMenuClick = (key: string) => {
-  const currentMenu = (menu || []).find((m) => m?.key == key);
-  if (!currentMenu) return;
+const handleMenuClick = (href: string) => {
+  const currentMenu = (menu || []).find((m) => m?.href == href);
+  if (!currentMenu) {
+    activeMenu.value = null;
+    return;
+  }
   activeMenu.value = currentMenu;
+  router.push(href);
 };
 
 provide(COLLAPSE_KEY, isCollapse);
 provide(COLLAPSE_HISTORY_KEY, isCollapseHistory);
 
+const loadCheckRoute = () => {
+  const original = route.path.split('/');
+  original.pop();
+  const currentMenu = menu.find((m) => m?.href?.startsWith(original.join('/')));
+  if (!currentMenu) {
+    activeMenu.value = null;
+    return;
+  }
+  activeMenu.value = currentMenu;
+  router.push(route.path || activeMenu.value?.href || '');
+};
+
 onMounted(() => {
-  activeMenu.value = menu[0];
+  loadCheckRoute();
 });
 </script>
 
@@ -224,7 +244,7 @@ onMounted(() => {
         'bg-primary! transition-colors duration-150 ease-linear': isCollapse,
       }"
     >
-      <MainMenu :active-menu-key="activeMenu?.key || ''" :menu="menu" @click="handleMenuClick" />
+      <MainMenu :active-menu-key="activeMenu?.href || ''" :menu="menu" @click="handleMenuClick" />
       <SubMenu :menu="activeMenu" />
 
       <button
@@ -258,7 +278,7 @@ onMounted(() => {
           </div>
           <div>
             <h4 class="text-sm font-semibold text-gray-700">System History</h4>
-            <p class="text-[10px] text-gray-500">Last user 20 accesses</p>
+            <p class="text-[10px] text-gray-500">Last 20 accessibilty</p>
           </div>
 
           <button

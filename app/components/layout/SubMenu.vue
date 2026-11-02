@@ -2,7 +2,7 @@
 import IconSearch from '~~/public/icons/search.svg';
 
 const isCollapse = inject(COLLAPSE_KEY);
-const props = defineProps<{ menu: Menu | undefined }>();
+const props = defineProps<{ menu: Menu | undefined | null }>();
 
 const { user } = useAuthStore();
 </script>
@@ -126,17 +126,14 @@ const { user } = useAuthStore();
 }
 
 /* fade animaion */
-
 .fade-enter-active,
 .fade-leave-active {
-  transition:
-    opacity 0.1 ease,
-    transform 0.1s ease;
+  transition: all 0.2s linear;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: translateX(-8px);
+  transform: translateX(-18px);
 }
 </style>

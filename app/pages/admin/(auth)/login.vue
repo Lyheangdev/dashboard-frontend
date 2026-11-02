@@ -5,15 +5,18 @@ import IconOff from '~~/public/icons/eye-off.svg';
 import IconOpen from '~~/public/icons/eye-open.svg';
 import IconLoginLogo from '~~/public/icons/login-logo.svg';
 import IconLoader from '~~/public/icons/loader.svg';
-import { FetchError } from 'ofetch';
+import IconCheck from '~~/public/icons/double-check.svg';
 
 import { useField, useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
+import type { IAuthUser } from '~/shared/types/type.user';
 
 definePageMeta({
   layout: 'auth',
 });
+
+const eyeCheck = ref(false);
 
 const formState = reactive<{
   loading: boolean;
@@ -21,9 +24,10 @@ const formState = reactive<{
   msg: string;
   errorType: BannerType;
 }>({ loading: false, error: false, msg: '', errorType: 'success' });
-const eyeCheck = ref(false);
 
 const { setUser } = useAuthStore();
+const appConfig = useAppConfig();
+const runtimeConfig = useRuntimeConfig();
 
 const loginValidationSchema = toTypedSchema(
   z.object({
@@ -40,43 +44,11 @@ const loginValidationSchema = toTypedSchema(
 
 const { handleSubmit, errors } = useForm({
   validationSchema: loginValidationSchema,
-  initialValues: {
-    email: '',
-    password: '',
-  },
+  initialValues: { email: '', password: '' },
 });
 
 const { value: email } = useField('email');
 const { value: password } = useField('password');
-
-type ISingleResponse<T> = {
-  status: string;
-  message: string;
-  data: T;
-};
-
-type ISingleReponseError<T> = ISingleResponse<T> & {
-  error: {
-    code: string;
-    details: null;
-    message: string | null;
-  };
-};
-
-interface IUser {
-  id: number;
-  full_name?: string;
-  email?: string;
-  bio?: string;
-  profile_url?: string;
-  role: string;
-  isBanned: boolean;
-  status: number;
-  code: string;
-  permissions: string[];
-  created_at: string;
-  updated_at: string;
-}
 
 const onSubmit = handleSubmit(async (formData) => {
   formState.loading = true;
@@ -84,14 +56,11 @@ const onSubmit = handleSubmit(async (formData) => {
   formState.msg = '';
 
   try {
-    const response = await $fetch<ISingleResponse<IUser>>(
-      'http://localhost:8000/api/v1/auth/login',
+    const response = await $fetch<IApiSingleResponse<IAuthUser>>(
+      `${runtimeConfig.public.apiBase}/auth/login`,
       {
         method: 'POST',
-        body: {
-          email: formData.email,
-          password: formData.password,
-        },
+        body: { email: formData.email, password: formData.password },
         credentials: 'include',
       },
     );
@@ -107,31 +76,14 @@ const onSubmit = handleSubmit(async (formData) => {
       role: response?.data?.role,
       permissions: response?.data?.permissions,
     });
+
     await navigateTo('/admin');
   } catch (err) {
     formState.error = true;
-
-    if (err instanceof FetchError) {
-      const errorReponse = err.data as ISingleReponseError<null>;
-      switch (errorReponse?.error?.code) {
-        case '400':
-        case '401':
-        case '404':
-        case '405':
-        case '409':
-        case '429':
-          formState.errorType = 'error';
-          break;
-        case '403':
-          formState.errorType = 'ban';
-          break;
-        default:
-          break;
-      }
-      formState.msg = errorReponse?.error?.message || 'Unknow error!';
-    } else if (err instanceof Error) {
-      formState.msg = err?.message || 'Unknow error!';
-    }
+    const { type, msg } = responseErrorExtrator(err);
+    if (type === 'error') formState.errorType = 'error';
+    else if (type === 'ban') formState.errorType = 'ban';
+    formState.msg = msg;
   } finally {
     formState.loading = false;
   }
@@ -152,10 +104,11 @@ const hanldeTogglePassword = () => {
             <IconLoginLogo class="size-16! text-blue-400" filled />
           </div>
 
-          <h2 class="text-center text-2xl font-bold text-blue-500">
-            Prod. Smart Dashboard <span class="font-normal! text-blue-400">1.0</span>
+          <h2 class="text-center text-[28px] font-bold text-blue-500">
+            {{ appConfig.page.login.title }}
+            <span class="font-normal! text-blue-400">{{ appConfig.page.login.titleVersion }}</span>
           </h2>
-          <p class="text-gray-400">Provide your credential to login</p>
+          <p class="text-[15px] text-gray-400">{{ appConfig.page.login.subtitle }}</p>
         </div>
 
         <div class="mt-4 h-px w-full bg-gray-200/80" />
@@ -163,12 +116,18 @@ const hanldeTogglePassword = () => {
         <div class="mt-4 flex flex-col gap-8 py-2">
           <Banner :open="formState.error" :type="formState.errorType" :message="formState.msg" />
 
-          <div class="flex flex-col gap-2.5">
-            <!-- Email input -->
+          <div class="flex flex-col gap-3.5">
+            <!-- !Email field -->
             <div>
               <div
-                class="relative flex items-center gap-2.5 rounded-md border border-blue-100 py-1 pr-1.5 pl-2 focus-within:outline-2 focus-within:outline-blue-400"
-                :class="[{ 'border-red-600 focus-within:outline-red-600': Boolean(errors?.email) }]"
+                class="relative flex items-center gap-2.5 rounded-md py-1 pr-1.5 pl-2 outline outline-blue-100 focus-within:outline-2 focus-within:outline-blue-400"
+                :class="[
+                  {
+                    'outline-2 outline-red-500 focus-within:outline-red-600': Boolean(
+                      errors?.email,
+                    ),
+                  },
+                ]"
               >
                 <div class="rounded-md bg-blue-400 p-1.5">
                   <IconEmail class="size-4! text-white" filled />
@@ -184,17 +143,25 @@ const hanldeTogglePassword = () => {
                   autosave="true"
                   class="w-full px-1.5 py-2 text-sm text-gray-600 outline-0 placeholder:text-sm placeholder:text-gray-400"
                 />
+                <IconCheck
+                  v-if="email && !errors?.email"
+                  class="absolute top-1/2 right-3 size-5! -translate-y-1/2 text-green-600"
+                  filled
+                />
               </div>
-              <span v-if="Boolean(errors?.email)" class="text-xs text-red-500">{{
-                errors?.email
-              }}</span>
+              <FormFieldErrorMessage :msg="errors?.email" />
             </div>
 
+            <!-- !Password field -->
             <div>
               <div
-                class="relative flex items-center gap-2.5 rounded-md border border-blue-100 py-1 pr-1.5 pl-2 focus-within:outline-2 focus-within:outline-blue-400"
+                class="relative flex items-center gap-2.5 rounded-md py-1 pr-1.5 pl-2 outline outline-blue-100 focus-within:outline-2 focus-within:outline-blue-400"
                 :class="[
-                  { 'border-red-600 focus-within:outline-red-600': Boolean(errors?.password) },
+                  {
+                    'outline-2 outline-red-500 focus-within:outline-red-600': Boolean(
+                      errors?.password,
+                    ),
+                  },
                 ]"
               >
                 <div class="rounded-md bg-blue-400 p-1.5">
@@ -212,22 +179,22 @@ const hanldeTogglePassword = () => {
                 <button
                   type="button"
                   @click.stop="hanldeTogglePassword"
-                  class="absolute top-1/2 right-4 -translate-y-1/2"
+                  class="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
                 >
                   <IconOff v-if="!eyeCheck" class="mt-1 size-5! text-gray-400" filled />
                   <IconOpen v-else class="mt-1 size-5! text-gray-400" filled />
                 </button>
               </div>
-              <span v-if="Boolean(errors?.password)" class="text-xs text-red-500">{{
-                errors?.password
-              }}</span>
+              <FormFieldErrorMessage :msg="errors?.password" />
             </div>
           </div>
 
-          <!-- Submit button -->
+          <!-- !Submit button -->
           <button
+            :disabled="!email || !password || !!errors?.email || !!errors?.password"
             type="submit"
-            class="flex w-full cursor-pointer items-center justify-center rounded-lg bg-blue-400 py-2.5 font-medium text-gray-100 transition-colors duration-300 ease-linear hover:bg-blue-500"
+            class="flex w-full cursor-pointer items-center justify-center rounded-lg bg-blue-400 py-2.5 font-medium text-gray-100 transition-colors duration-300 ease-linear select-none hover:bg-blue-500"
+            :class="['disabled:cursor-not-allowed! disabled:bg-gray-100/80 disabled:text-gray-300']"
           >
             <div v-if="formState.loading" class="flex items-center gap-1.5">
               <IconLoader class="size-4! animate-spin" filled />
@@ -238,10 +205,11 @@ const hanldeTogglePassword = () => {
 
           <div class="mt-2 flex flex-col items-center justify-center gap-1.5">
             <span class="text-[13px] text-gray-400/80"
-              >©{{ new Date().getFullYear() }} Copyright SVI (AEC) company limited</span
+              >©{{ new Date().getFullYear() }} {{ appConfig.copyright }}</span
             >
             <span class="text-sm text-blue-400"
-              ><span class="font-semibold text-blue-400">version</span> 1.0.0</span
+              ><span class="font-semibold text-blue-400">Version</span>
+              {{ appConfig.version }}</span
             >
           </div>
         </div>

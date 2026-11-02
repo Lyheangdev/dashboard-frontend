@@ -7,9 +7,10 @@
     "nuxt:clean": "npx nuxt cleanup",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "build": "nuxt build",
-    "dev": "nuxt dev",
+    "build": "nuxt build --dotenv .env",
+    "dev": "nuxt dev --dotenv .env.local",
     "generate": "nuxt generate",
+    "launch": "node .output/server/index.mjs",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },

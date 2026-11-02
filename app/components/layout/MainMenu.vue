@@ -1,46 +1,19 @@
 <script setup lang="ts">
+import type { IAuthUser } from '~/shared/types/type.user';
 import IconEarthLogo from '~~/public/icons/globe-logo.svg';
 import IconLogout from '~~/public/icons/logout.svg';
 
 defineProps<{ activeMenuKey: string; menu: MenuList }>();
 defineEmits<{
-  (e: 'click', key: string): void;
+  (e: 'click', href: string): void;
 }>();
 
-type ISingleResponse<T> = {
-  status: string;
-  message: string;
-  data: T;
-};
-
-type ISingleReponseError<T> = ISingleResponse<T> & {
-  error: {
-    code: string;
-    details: null;
-    message: string | null;
-  };
-};
-
-interface IUser {
-  id: number;
-  full_name?: string;
-  email?: string;
-  bio?: string;
-  profile_url?: string;
-  role: string;
-  isBanned: boolean;
-  status: number;
-  code: string;
-  permissions: string[];
-  created_at: string;
-  updated_at: string;
-}
-
+const runtimeConfig = useRuntimeConfig();
 const { clearnAuth } = useAuthStore();
 
 const handleLogout = async () => {
   try {
-    await $fetch<ISingleResponse<IUser>>('http://localhost:8000/api/v1/auth/logout', {
+    await $fetch<IApiSingleResponse<IAuthUser>>(`${runtimeConfig.public.apiBase}/auth/logout`, {
       credentials: 'include',
     });
     clearnAuth();
@@ -62,12 +35,13 @@ const handleLogout = async () => {
         v-for="m in menu"
         :key="m.key"
         class="ease cursor-pointer rounded-xl p-1.5 transition-all duration-200 hover:-translate-x-0.5 hover:bg-white/20"
-        :class="[m.key == activeMenuKey ? 'bg-white/20' : '']"
-        @click.stop="$emit('click', m?.key)"
+        :class="[{ 'bg-white/20': m.href == activeMenuKey }]"
+        @click.stop="$emit('click', m?.href || '')"
       >
         <component :is="m.icon" class="size-6! text-gray-100!" filled />
       </div>
     </nav>
+
     <button @click.stop="handleLogout" class="group absolute bottom-6 cursor-pointer">
       <IconLogout class="ease size-6! text-white duration-300 group-hover:text-gray-300" filled />
     </button>

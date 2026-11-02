@@ -27,4 +27,9 @@ export default defineNuxtConfig({
       },
     ],
   },
+  runtimeConfig: {
+    public: {
+      apiBase: `${import.meta.env.NUXT_API_URL}/api/v1`,
+    },
+  },
 });
