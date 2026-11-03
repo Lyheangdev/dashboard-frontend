@@ -13,8 +13,6 @@ const paths = computed(() => {
     return { label: capitalize(path), path: concatePath };
   });
 });
-
-console.log(paths.value);
 </script>
 
 <template>

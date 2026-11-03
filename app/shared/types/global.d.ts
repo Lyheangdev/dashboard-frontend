@@ -1,6 +1,36 @@
 export {};
 
 declare global {
+  //-- Api response type
+  interface IApiMetadata {
+    page: number;
+    page_size: number;
+    total_page: number;
+    total: number;
+  }
+
+  interface IApiError {
+    code: string;
+    details: null;
+    message: string | null;
+  }
+
+  type IApiSingleResponse<T> = {
+    status: string;
+    message: string;
+    data: T;
+    error: IApiError | null;
+  };
+
+  type IApiCollectionResponse<T> = {
+    status: string;
+    message: string;
+    data: Array<T>;
+    metadata: IApiMetadata;
+    error: IApiError | null;
+  };
+
+  //-- Syste menu
   interface MenuItem {
     icon?: any;
     key: string;
@@ -8,14 +38,14 @@ declare global {
     href?: string;
   }
 
-  // Banner type
-  type BannerType = 'ban' | 'warning' | 'error' | 'success';
-
   type Submenu = MenuItem & { subitems: Array<MenuItem> };
   type Menu = MenuItem & { submenu: Array<Submenu> };
   type MenuList = Array<MenuItem & { submenu: Array<Submenu> }>;
 
-  // Only use with table column builder
+  //-- Banner type
+  type BannerType = 'ban' | 'warning' | 'error' | 'success';
+
+  //-- System table
   interface IScrollTable {
     isScrollable: ComputedRef<boolean>;
     scrollLeft: () => void;

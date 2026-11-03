@@ -8,9 +8,6 @@ onMounted(() => {
 
   eventSource.onmessage = (event: MessageEvent) => {
     const line = JSON.parse(event.data) as { data: string };
-
-    console.log('New line:', line);
-
     lines.value.push(line.data);
   };
 
