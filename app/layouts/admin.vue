@@ -165,6 +165,11 @@ const menu: MenuList = [
         label: 'Miscellaneous',
         subitems: [
           {
+            key: 'submenu-setting-my-profile-key',
+            label: 'Personal Preference',
+            href: ROUTE.$settings('/settings/my-profile'),
+          },
+          {
             key: 'submenu-setting-miscellaneous-key',
             label: 'Configure SSE',
             href: '#',
@@ -231,7 +236,7 @@ const validateRoute = () => {
     activeMenu.value = null;
     return;
   }
-  
+
   activeMenu.value = currentMenu;
   router.push(route.path || activeMenu.value?.href || '');
 };

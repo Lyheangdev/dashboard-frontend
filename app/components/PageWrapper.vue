@@ -28,7 +28,10 @@ const paths = computed(() => (route.path || '').split('/'));
           class="flex items-center gap-1.5 rounded-md border border-blue-200 bg-blue-50 px-2.5 pt-1 pb-1"
         >
           <IconProfile class="size-4.5! text-blue-500" filled />
-          <NuxtLink class="cursor-pointer text-sm font-medium text-blue-400 capitalize">
+          <NuxtLink
+            :to="ROUTE.$settings('/settings/my-profile')"
+            class="cursor-pointer text-sm font-medium text-blue-400 capitalize"
+          >
             My profile
           </NuxtLink>
         </div>
