@@ -219,20 +219,25 @@ const handleMenuClick = (href: string) => {
 provide(COLLAPSE_KEY, isCollapse);
 provide(COLLAPSE_HISTORY_KEY, isCollapseHistory);
 
-const loadCheckRoute = () => {
+const validateRoute = () => {
   const original = route.path.split('/');
-  original.pop();
-  const currentMenu = menu.find((m) => m?.href?.startsWith(original.join('/')));
+  original.shift(); //-- omit first path
+  original.pop(); //-- omit the last path
+
+  const joinPath = original.join('/') ? `/${original.join('/')}` : original.join('/');
+  const currentMenu = joinPath ? menu.find((m) => m?.href?.startsWith(joinPath)) : null;
+
   if (!currentMenu) {
     activeMenu.value = null;
     return;
   }
+  
   activeMenu.value = currentMenu;
   router.push(route.path || activeMenu.value?.href || '');
 };
 
 onMounted(() => {
-  loadCheckRoute();
+  validateRoute();
 });
 </script>
 
