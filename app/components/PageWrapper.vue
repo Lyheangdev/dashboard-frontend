@@ -3,11 +3,9 @@ import IconProfile from '~~/public/icons/profile.svg';
 
 defineProps<{
   pageLabel: string;
+  containerClass?: string;
 }>();
 
-const route = useRoute();
-
-const paths = computed(() => (route.path || '').split('/'));
 </script>
 
 <template>
@@ -38,7 +36,7 @@ const paths = computed(() => (route.path || '').split('/'));
       </div>
     </div>
 
-    <div class="relative mt-2 flex max-w-full flex-1 flex-col gap-2 rounded-xl bg-white p-2">
+    <div class="relative mt-2 flex max-w-full flex-1 flex-col gap-2 rounded-xl bg-white p-2" :class="containerClass">
       <slot />
     </div>
   </div>

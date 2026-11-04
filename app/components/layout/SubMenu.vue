@@ -66,21 +66,34 @@ const { user } = useAuthStore();
         </div>
       </div>
 
-      <div class="absolute right-1.5 bottom-2 left-1.5">
-        <div class="bg-primary flex items-center gap-2 rounded-xl border border-gray-200 p-1.5">
-          <div class="relative w-fit overflow-hidden rounded-full bg-white">
+      <div class="absolute right-0 bottom-0 left-0">
+        <div
+          class="flex items-center gap-1.5 bg-blue-300/50 bg-linear-to-r from-blue-400 px-2 py-2.5"
+        >
+          <div class="relative w-fit shrink-0 grow-0 overflow-hidden rounded-full bg-white">
             <NuxtImg
-              class="size-10 object-cover"
+              class="size-9 object-cover"
               quality="80"
               src="/images/my-profile.png"
               alt="my-profile.png"
             />
           </div>
           <div class="flex flex-col">
-            <p class="text-[13px] font-medium text-gray-700">
+            <p class="text-[13px] font-medium text-white">
               {{ user?.email ? user.email : 'Anonymous' }}
             </p>
-            <p class="text-xs text-gray-400">{{ user?.role ? user.role : 'Unassigned Role' }}</p>
+            <div class="flex items-center gap-1.5">
+              <div
+                class="flex w-fit items-center gap-1.5 rounded-[5px] bg-blue-500/30 px-2 py-0.5 text-white"
+              >
+                <div class="size-2 rounded-full bg-green-400" />
+                <span class="text-[11px]">{{ user?.role ? user.role : 'Unassigned Role' }}</span>
+              </div>
+              <div class="h-3.5 w-px bg-gray-200/80" />
+              <span class="text-[11px] font-medium text-gray-700 capitalize">{{
+                user?.status == 1 ? 'Active' : 'Pending'
+              }}</span>
+            </div>
           </div>
         </div>
       </div>

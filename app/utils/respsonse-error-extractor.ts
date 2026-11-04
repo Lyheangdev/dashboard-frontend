@@ -22,7 +22,11 @@ export const responseErrorExtrator = (errorObjet: unknown): IErrorExtractorType 
       case '403':
         return { type: 'ban', code: errCode, msg: errMsg };
       default:
-        return { type: 'error', code: 'ERROR', msg: 'Uncatched error, Please check!' };
+        return {
+          type: 'error',
+          code: 'ERROR',
+          msg: 'Uncatched error or connection refused, Please check!',
+        };
     }
   } else if (errorObjet instanceof Error) {
     return { type: 'error', code: 'ERROR', msg: errorObjet.message };

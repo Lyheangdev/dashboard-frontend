@@ -70,11 +70,15 @@ const onSubmit = handleSubmit(async (formData) => {
       email: response?.data?.email,
       bio: response?.data?.bio,
       full_name: response?.data?.full_name,
+      code: response?.data?.code,
       profile_url: response?.data?.profile_url,
       isBanned: response?.data?.isBanned,
       status: response?.data?.status,
       role: response?.data?.role,
       permissions: response?.data?.permissions,
+      views: response?.data?.views,
+      resources: response?.data?.resources,
+      created_at: response?.data?.created_at,
     });
 
     await navigateTo('/admin');

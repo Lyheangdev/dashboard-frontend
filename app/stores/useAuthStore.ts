@@ -1,19 +1,8 @@
 import { defineStore } from 'pinia';
-
-interface IUser {
-  id?: number;
-  full_name?: string;
-  email?: string;
-  bio?: string;
-  profile_url?: string;
-  role?: string;
-  isBanned?: boolean;
-  status?: number;
-  permissions?: string[];
-}
+import type { IUserStore } from '~/shared/types/type.user';
 
 interface IAuthState {
-  user: IUser | null;
+  user: IUserStore | null;
   isAuthenticated: boolean;
 }
 
@@ -29,7 +18,7 @@ export const useAuthStore = defineStore('auth', {
     },
   },
   actions: {
-    setUser(user: IUser) {
+    setUser(user: IUserStore) {
       this.user = user;
       this.isAuthenticated = true;
     },
