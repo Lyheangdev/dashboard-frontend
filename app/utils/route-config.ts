@@ -4,7 +4,8 @@ type ROUTE_SETTING_TYPE =
   | '/settings/permissions'
   | '/settings/users'
   | '/settings/link-access'
-  | '/settings/config-role-permission';
+  | '/settings/config-role-permission'
+  | '/settings/my-profile';
 
 type ROUTE_DASHBOARD_TYPE = '/dashboard' | '/dashboard/summury';
 type ROUTE_YIELD_TYPE = '/yield' | '/yield/input';
