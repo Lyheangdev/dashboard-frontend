@@ -5,6 +5,7 @@ const isCollapse = inject(COLLAPSE_KEY);
 const props = defineProps<{ menu: Menu | undefined | null }>();
 
 const { user } = useAuthStore();
+const runtimeConfig = useRuntimeConfig();
 </script>
 
 <template>
@@ -28,42 +29,44 @@ const { user } = useAuthStore();
       <div class="bg-primary mx-auto h-px w-5/6" />
 
       <div class="px-4 py-2">
-        <div v-for="m in menu?.submenu || []" :key="m.key" class="py-3">
-          <Transition :key="m.key" name="fade" mode="out-in" appear>
-            <div>
-              <p
-                v-if="m?.label"
-                class="relative border-l-2 border-l-blue-100 pl-3 text-sm font-semibold text-gray-600"
-                :class="[
-                  'after:content-[] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-5 after:origin-left after:translate-x-[-1.3px] after:rotate-[53.13deg] after:rounded-l-xs after:bg-blue-100',
-                ]"
-              >
-                {{ m?.label }}
-              </p>
-
-              <div :key="menu?.key" class="mt-3.5 ml-3 flex w-fit flex-col">
-                <div
-                  v-for="(sm, i) in m?.subitems || []"
-                  :key="sm?.key"
-                  class="group/submenu relative py-1.5 pl-4 before:absolute before:top-0 before:bottom-0 before:left-0 before:w-0.5 before:bg-blue-100 before:content-[''] hover:before:bg-blue-400! hover:before:transition-colors hover:before:duration-500"
+        <template v-for="sm in menu?.submenu || []" :key="sm.key">
+          <div v-if="Boolean(sm?.enableMenu)" class="py-3">
+            <Transition :key="sm.key" name="fade" mode="out-in" appear>
+              <div>
+                <p
+                  v-if="sm?.label"
+                  class="relative border-l-2 border-l-blue-100 pl-3 text-sm font-semibold text-gray-600"
                   :class="[
-                    { 'font-medium before:bg-blue-500!': sm?.href == $route.path },
-                    { 'before:rounded-tr-xs': i === 0 },
+                    'after:content-[] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-5 after:origin-left after:translate-x-[-1.3px] after:rotate-[53.13deg] after:rounded-l-xs after:bg-blue-100',
                   ]"
                 >
-                  <NuxtLink
-                    v-if="sm?.label"
-                    :to="sm?.href"
-                    class="ease cursor-pointer text-sm text-gray-500 transition-colors duration-300 group-hover/submenu:text-blue-500"
-                    :class="[{ 'text-blue-500!': sm?.href == $route.path }]"
+                  {{ sm?.label }}
+                </p>
+
+                <div :key="menu?.key" class="mt-3.5 ml-3 flex w-fit flex-col">
+                  <div
+                    v-for="(sm, i) in sm?.subitems || []"
+                    :key="sm?.key"
+                    class="group/submenu relative py-1.5 pl-4 before:absolute before:top-0 before:bottom-0 before:left-0 before:w-0.5 before:bg-blue-100 before:content-[''] hover:before:bg-blue-400! hover:before:transition-colors hover:before:duration-500"
+                    :class="[
+                      { 'font-medium before:bg-blue-500!': sm?.href == $route.path },
+                      { 'before:rounded-tr-xs': i === 0 },
+                    ]"
                   >
-                    {{ sm?.label }}
-                  </NuxtLink>
+                    <NuxtLink
+                      v-if="sm?.label"
+                      :to="sm?.href"
+                      class="ease cursor-pointer text-sm text-gray-500 transition-colors duration-300 group-hover/submenu:text-blue-500"
+                      :class="[{ 'text-blue-500!': sm?.href == $route.path }]"
+                    >
+                      {{ sm?.label }}
+                    </NuxtLink>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Transition>
-        </div>
+            </Transition>
+          </div>
+        </template>
       </div>
 
       <div class="absolute right-0 bottom-0 left-0">
@@ -74,7 +77,11 @@ const { user } = useAuthStore();
             <NuxtImg
               class="size-9 object-cover"
               quality="80"
-              src="/images/my-profile.png"
+              :src="
+                user?.profile_url
+                  ? `${runtimeConfig.public.assetUrl}${user?.profile_url}`
+                  : '/images/my-profile.png'
+              "
               alt="my-profile.png"
             />
           </div>
