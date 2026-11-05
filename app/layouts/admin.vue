@@ -10,6 +10,26 @@ import IconClock from '~~/public/icons/clock.svg';
 import IconHistory from '~~/public/icons/history.svg';
 import IconClose from '~~/public/icons/close.svg';
 
+const getMenuIcon = (key: string) => {
+  switch (key) {
+    case 'DASHBOARD':
+      return IconDashboard;
+
+    case 'YIELD':
+      return IconReports;
+
+    case 'LOG':
+      return IconDatabase;
+
+    case 'MICELLANEOUS':
+      return IconLogging;
+
+    case 'SETTINGS':
+    default:
+      return IconSettings;
+  }
+};
+
 const menu: MenuList = [
   {
     key: 'menu-dashboard-key',

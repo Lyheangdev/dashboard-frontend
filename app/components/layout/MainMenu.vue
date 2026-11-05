@@ -42,8 +42,8 @@ const handleLogout = async () => {
       </div>
     </nav>
 
-    <button @click.stop="handleLogout" class="group absolute bottom-6 cursor-pointer">
-      <IconLogout class="ease size-6! text-white duration-300 group-hover:text-gray-300" filled />
+    <button @click.stop="handleLogout" class="group absolute bottom-4 cursor-pointer bg-white/15 p-1.5 rounded-full hover:bg-white duration-300 ease-linear">
+      <IconLogout class="ease size-5! text-white duration-300 group-hover:text-blue-400" filled />
     </button>
   </div>
 </template>
