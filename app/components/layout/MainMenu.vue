@@ -32,7 +32,7 @@ const handleLogout = async () => {
     <nav class="relative flex flex-col gap-3.5">
       <template v-for="m in menu" :key="m.key">
         <div
-          v-if="m?.enableMenu"
+          v-if="m?.isAuthorized"
           role="button"
           class="ease cursor-pointer rounded-xl p-1.5 transition-all duration-200 hover:-translate-x-0.5 hover:bg-white/20"
           :class="[{ 'bg-white/20': m.href == activeMenuKey }]"

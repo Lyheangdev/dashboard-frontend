@@ -4,6 +4,10 @@ import type { NuxtError } from '#app';
 definePageMeta({
   layout: 'admin',
 });
+
+useHead({
+  title: 'Exception',
+});
 const props = defineProps<{ error: NuxtError }>();
 </script>
 

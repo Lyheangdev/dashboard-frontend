@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import IconSearch from '~~/public/icons/search.svg';
-
-const isCollapse = inject(COLLAPSE_KEY);
 const props = defineProps<{ menu: Menu | undefined | null }>();
 
 const { user } = useAuthStore();
 const runtimeConfig = useRuntimeConfig();
+
+const isCollapse = inject(COLLAPSE_KEY);
 </script>
 
 <template>
@@ -30,7 +30,7 @@ const runtimeConfig = useRuntimeConfig();
 
       <div class="px-4 py-2">
         <template v-for="sm in menu?.submenu || []" :key="sm.key">
-          <div v-if="Boolean(sm?.enableMenu)" class="py-3">
+          <div v-if="Boolean(sm?.isAuthorized)" class="py-3">
             <Transition :key="sm.key" name="fade" mode="out-in" appear>
               <div>
                 <p

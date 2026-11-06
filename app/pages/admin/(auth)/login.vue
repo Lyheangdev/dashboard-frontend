@@ -16,6 +16,10 @@ definePageMeta({
   layout: 'auth',
 });
 
+useHead({
+  title: 'Login'
+})
+
 const eyeCheck = ref(false);
 
 const formState = reactive<{

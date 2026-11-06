@@ -8,10 +8,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   //-- prevent authenticated user to navigate to login page
   if (isAuthenticated && to.path === '/admin/login') {
-    return navigateTo('/admin', { replace: true });
+    return navigateTo(ROUTE.$dashboard('/dashboard'), { replace: true });
   }
 
   if (isAuthenticated && to.path === '/admin') {
-    return navigateTo(ROUTE.$dashboard('/dashboard/summury'), { replace: true });
+    return navigateTo(ROUTE.$dashboard('/dashboard'), { replace: true });
   }
 });

@@ -1,30 +1,45 @@
-import type { EMenu, EResource } from './authorities';
+import type { EMenu, EPermission, EResource } from './authorities';
 
-//--- Check exactly one menu exist
+//*--- Check if exact one menu matched
 export const checkExactOneMenuExist = (menus: string[], menuCondition: EMenu) => {
-  const menusSet = new Set(menus);
-  return menusSet.has(menuCondition);
+  return new Set(menus).has(menuCondition);
 };
 
-//--- Check some menu
+//*--- Check if some menu matched
 export const checkSomeMenusExist = (menus: string[], menuConditions: Array<EMenu>) => {
-  const isSomeMenuMatched = (menus || []).some((m) => menuConditions.includes(m as never));
-  return isSomeMenuMatched;
+  return (menus || []).some((m) => new Set(menuConditions).has(m as never));
 };
 
-//--- Check every menu
+//*--- Check if every menu matched
 export const checkAllMenusExist = (menus: string[], menuConditions: Array<EMenu>) => {
-  const isSomeMenuMatched = (menus || []).every((m) => menuConditions.includes(m as never));
-  return isSomeMenuMatched;
+  return (menus || []).every((m) => new Set(menuConditions).has(m as never));
 };
 
-//--- Check some resource
+//*--- Check if exact one resource matched
+export const checkExactOneResourceExist = (resources: string[], resourceCondition: EResource) => {
+  return new Set(resources).has(resourceCondition);
+};
+
+//*-- Check if some resources matched
 export const checkSomeResourceExist = (
   resources: string[],
   resourceConditions: Array<EResource>,
 ) => {
-  const isSomeResourceMatched = (resources || []).some((r) =>
-    resourceConditions.includes(r as never),
-  );
-  return isSomeResourceMatched;
+  return (resources || []).some((r) => new Set(resourceConditions).has(r as never));
+};
+
+//*-- Check if exact one permission matched
+export const checkExactOnePermissionExist = (
+  permissions: string[],
+  permissionCondition: EPermission,
+) => {
+  return new Set(permissions).has(permissionCondition);
+};
+
+//*-- Check if some permissions matched
+export const checkSomePermissionExist = (
+  permissions: string[],
+  permissionCondition: EPermission[],
+) => {
+  return permissions.some((p) => new Set(permissionCondition).has(p as never));
 };
