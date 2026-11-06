@@ -9,196 +9,220 @@ import IconLogging from '~~/public/icons/logging.svg';
 import IconClock from '~~/public/icons/clock.svg';
 import IconHistory from '~~/public/icons/history.svg';
 import IconClose from '~~/public/icons/close.svg';
+import { checkExactOneMenuExist, checkSomeResourceExist } from '~/shared/utils/authority-helper';
+import { EMenu, EResource, ERole } from '~/shared/utils/authorities';
 
-const getMenuIcon = (key: string) => {
-  switch (key) {
-    case 'DASHBOARD':
-      return IconDashboard;
+const auth = useAuthStore();
 
-    case 'YIELD':
-      return IconReports;
-
-    case 'LOG':
-      return IconDatabase;
-
-    case 'MICELLANEOUS':
-      return IconLogging;
-
-    case 'SETTINGS':
-    default:
-      return IconSettings;
-  }
-};
-
-const menu: MenuList = [
-  {
-    key: 'menu-dashboard-key',
-    label: 'Dashboard',
-    icon: IconDashboard,
-    href: ROUTE.$dashboard('/dashboard/summury'),
-    submenu: [
-      {
-        key: 'section-overview-summury-key',
-        label: 'Overview Summary',
-        subitems: [
-          {
-            key: 'submenu-dashboard-key',
-            label: 'Dashboard',
-            href: ROUTE.$dashboard('/dashboard/summury'),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'menu-input-yield-key',
-    label: 'Input Yield',
-    icon: IconReports,
-    href: ROUTE.$yield('/yield/input'),
-    submenu: [
-      {
-        key: 'section-tracking-input-key',
-        label: 'Tracking Yield',
-        subitems: [
-          {
-            key: 'submenu-input-yield-key',
-            label: 'Input Yield',
-            href: ROUTE.$yield('/yield/input'),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'menu-manage-resource-key',
-    label: 'Manage Resource',
-    icon: IconDatabase,
-    href: ROUTE.$miscellaneous('/miscellaneous/line'),
-    submenu: [
-      {
-        key: 'section-miscellaneous-key',
-        label: 'Miscellaneous',
-        subitems: [
-          {
-            key: 'submenu-line-key',
-            label: 'Manage Line',
-            href: ROUTE.$miscellaneous('/miscellaneous/line'),
-          },
-          {
-            key: 'submenu-project-line-key',
-            label: 'Manage Project Line',
-            href: ROUTE.$miscellaneous('/miscellaneous/project-line'),
-          },
-          {
-            key: 'submenu-project-key',
-            label: 'Manage Project',
-            href: ROUTE.$miscellaneous('/miscellaneous/project'),
-          },
-          {
-            key: 'submenu-workorder-key',
-            label: 'Manage Workorder',
-            href: ROUTE.$miscellaneous('/miscellaneous/workorder'),
-          },
-          {
-            key: 'submenu-customer-key',
-            label: 'Manage customer',
-            href: ROUTE.$miscellaneous('/miscellaneous/customer'),
-          },
-          {
-            key: 'submenu-line-owner-key',
-            label: 'Manage Line Owner',
-            href: ROUTE.$miscellaneous('/miscellaneous/line-owner'),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'menu-logging-key',
-    label: 'Logging',
-    icon: IconLogging,
-    href: ROUTE.$log('/log/operation-log'),
-    submenu: [
-      {
-        key: 'section-logging-key',
-        label: 'Auditing & Logging',
-        subitems: [
-          {
-            key: 'submenu-operation-logging-key',
-            label: 'Operation Logging',
-            href: ROUTE.$log('/log/operation-log'),
-          },
-          {
-            key: 'submenu-error-logging-key',
-            label: 'Error Logging',
-            href: ROUTE.$log('/log/error-log'),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'menu-setting-key',
-    label: 'Settings',
-    icon: IconSettings,
-    href: ROUTE.$settings('/settings/roles'),
-    submenu: [
-      {
-        key: 'section-permission-privilege-key',
-        label: 'Role & Permission',
-        subitems: [
-          {
-            key: 'submenu-manage-role-key',
-            label: 'Manage Role',
-            href: ROUTE.$settings('/settings/roles'),
-          },
-          {
-            key: 'submenu-manage-permission-key',
-            label: 'Manage Permission',
-            href: ROUTE.$settings('/settings/permissions'),
-          },
-          {
-            key: 'submenu-config-role-permission-key',
-            label: 'Config Role & Permission',
-            href: ROUTE.$settings('/settings/config-role-permission'),
-          },
-        ],
-      },
-      {
-        key: 'section-user-key',
-        label: 'Internal User',
-        subitems: [
-          {
-            key: 'submenu-manage-user-key',
-            label: 'Manage Users',
-            href: ROUTE.$settings('/settings/users'),
-          },
-          {
-            key: 'submenu-bind-user-key',
-            label: 'Manage User Access',
-            href: ROUTE.$settings('/settings/link-access'),
-          },
-        ],
-      },
-      {
-        key: 'section-setting-miscellaneous-key',
-        label: 'Miscellaneous',
-        subitems: [
-          {
-            key: 'submenu-setting-my-profile-key',
-            label: 'Personal Preference',
-            href: ROUTE.$settings('/settings/my-profile'),
-          },
-          {
-            key: 'submenu-setting-miscellaneous-key',
-            label: 'Configure SSE',
-            href: '#',
-          },
-        ],
-      },
-    ],
-  },
-];
+const menu = computed<MenuList>(() => {
+  return [
+    {
+      key: 'menu-dashboard-key',
+      label: 'Dashboard',
+      icon: IconDashboard,
+      href: ROUTE.$dashboard('/dashboard/summury'),
+      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_DASHBOARD_MENU),
+      submenu: [
+        {
+          key: 'section-overview-summury-key',
+          label: 'Overview Summary',
+          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [EResource.DASHBOARD]),
+          subitems: [
+            {
+              key: 'submenu-dashboard-key',
+              label: 'Dashboard',
+              href: ROUTE.$dashboard('/dashboard/summury'),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'menu-input-yield-key',
+      label: 'Input Yield',
+      icon: IconReports,
+      href: ROUTE.$yield('/yield/input'),
+      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_YIELD_MENU),
+      submenu: [
+        {
+          key: 'section-tracking-input-key',
+          label: 'Tracking Yield',
+          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [EResource.YIELD]),
+          subitems: [
+            {
+              key: 'submenu-input-yield-key',
+              label: 'Input Yield',
+              href: ROUTE.$yield('/yield/input'),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'menu-manage-resource-key',
+      label: 'Manage Resource',
+      icon: IconDatabase,
+      href: ROUTE.$miscellaneous('/miscellaneous/line'),
+      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_MICELLANEOUS_MENU),
+      submenu: [
+        {
+          key: 'section-resource-key',
+          label: 'Manage Resource',
+          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [
+            EResource.LINE,
+            EResource.LINE_OWNER,
+            EResource.JOBORDER,
+            EResource.WORKORDER,
+            EResource.CUSTOMER,
+            EResource.LINE_OWNER,
+            EResource.PROCESS,
+            EResource.PROJECT,
+            EResource.PROJECT_LINE,
+          ]),
+          subitems: [
+            {
+              key: 'submenu-line-key',
+              label: 'Manage Line',
+              href: ROUTE.$miscellaneous('/miscellaneous/line'),
+            },
+            {
+              key: 'submenu-project-line-key',
+              label: 'Manage Project Line',
+              href: ROUTE.$miscellaneous('/miscellaneous/project-line'),
+            },
+            {
+              key: 'submenu-project-key',
+              label: 'Manage Project',
+              href: ROUTE.$miscellaneous('/miscellaneous/project'),
+            },
+            {
+              key: 'submenu-workorder-key',
+              label: 'Manage Workorder',
+              href: ROUTE.$miscellaneous('/miscellaneous/workorder'),
+            },
+            {
+              key: 'submenu-customer-key',
+              label: 'Manage customer',
+              href: ROUTE.$miscellaneous('/miscellaneous/customer'),
+            },
+            {
+              key: 'submenu-line-owner-key',
+              label: 'Manage Line Owner',
+              href: ROUTE.$miscellaneous('/miscellaneous/line-owner'),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'menu-logging-key',
+      label: 'Logging',
+      icon: IconLogging,
+      href: ROUTE.$log('/log/operation-log'),
+      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_LOG_MENU),
+      submenu: [
+        {
+          key: 'section-logging-key',
+          label: 'Auditing & Logging',
+          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [EResource.LOG]),
+          subitems: [
+            {
+              key: 'submenu-operation-logging-key',
+              label: 'Operation Log File',
+              href: ROUTE.$log('/log/operation-log'),
+            },
+            {
+              key: 'submenu-error-logging-key',
+              label: 'Error Log File',
+              href: ROUTE.$log('/log/error-log'),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'menu-setting-key',
+      label: 'Settings',
+      icon: IconSettings,
+      href: ROUTE.$settings('/settings/roles'),
+      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_SETTINGS_MENU),
+      submenu: [
+        {
+          key: 'section-permission-privilege-key',
+          label: 'Role & Permission',
+          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [
+            EResource.ROLE,
+            EResource.PERMISSION,
+          ]),
+          subitems: [
+            {
+              key: 'submenu-manage-role-key',
+              label: 'Manage Role',
+              href: ROUTE.$settings('/settings/roles'),
+            },
+            {
+              key: 'submenu-manage-permission-key',
+              label: 'Manage Permission',
+              href: ROUTE.$settings('/settings/permissions'),
+            },
+            {
+              key: 'submenu-config-role-permission-key',
+              label: 'Config Role & Permission',
+              href: ROUTE.$settings('/settings/config-role-permission'),
+            },
+          ],
+        },
+        {
+          key: 'section-user-key',
+          label: 'Internal User',
+          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [
+            EResource.USER,
+            EResource.SYSTEM_ACCESS,
+          ]),
+          subitems: [
+            {
+              key: 'submenu-manage-user-key',
+              label: 'Manage Users',
+              href: ROUTE.$settings('/settings/users'),
+            },
+            {
+              key: 'submenu-bind-user-key',
+              label: 'Manage User Access',
+              href: ROUTE.$settings('/settings/link-access'),
+            },
+          ],
+        },
+        {
+          key: 'section-setting-account-key',
+          label: 'User Account',
+          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [
+            EResource.ACCOUNT,
+            EResource.SSE,
+          ]),
+          subitems: [
+            {
+              key: 'submenu-setting-my-account-key',
+              label: 'Person Profile',
+              href: ROUTE.$settings('/settings/my-profile'),
+            },
+          ],
+        },
+        {
+          key: 'section-setting-advance-option-key',
+          label: 'Advance Options',
+          enableMenu: auth.user?.role === ERole.SUPERADMIN,
+          subitems: [
+            {
+              key: 'submenu-setting-sse-key',
+              label: 'Configure SSE',
+              href: '#',
+            },
+          ],
+        },
+      ],
+    },
+  ];
+});
 
 const accesshistory = [
   {
@@ -232,7 +256,7 @@ const handleToggleCollapseHistory = () => {
 };
 
 const handleMenuClick = (href: string) => {
-  const currentMenu = (menu || []).find((m) => m?.href == href);
+  const currentMenu = (menu.value || []).find((m) => m?.href == href);
   if (!currentMenu) {
     activeMenu.value = null;
     return;
@@ -250,7 +274,7 @@ const validateRoute = () => {
   original.pop(); //-- omit the last path
 
   const joinPath = original.join('/') ? `/${original.join('/')}` : original.join('/');
-  const currentMenu = joinPath ? menu.find((m) => m?.href?.startsWith(joinPath)) : null;
+  const currentMenu = joinPath ? menu.value.find((m) => m?.href?.startsWith(joinPath)) : null;
 
   if (!currentMenu) {
     activeMenu.value = null;
@@ -261,6 +285,15 @@ const validateRoute = () => {
   router.push(route.path || activeMenu.value?.href || '');
 };
 
+// -- Run after route change not when initial mount
+watch(
+  () => route.fullPath,
+  () => {
+    validateRoute();
+  },
+);
+
+//-- Run for only initial mount
 onMounted(() => {
   validateRoute();
 });

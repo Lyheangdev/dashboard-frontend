@@ -30,19 +30,23 @@ const handleLogout = async () => {
   >
     <IconEarthLogo class="size-18! fill-white" filled />
     <nav class="relative flex flex-col gap-3.5">
-      <div
-        role="button"
-        v-for="m in menu"
-        :key="m.key"
-        class="ease cursor-pointer rounded-xl p-1.5 transition-all duration-200 hover:-translate-x-0.5 hover:bg-white/20"
-        :class="[{ 'bg-white/20': m.href == activeMenuKey }]"
-        @click.stop="$emit('click', m?.href || '')"
-      >
-        <component :is="m.icon" class="size-6! text-gray-100!" filled />
-      </div>
+      <template v-for="m in menu" :key="m.key">
+        <div
+          v-if="m?.enableMenu"
+          role="button"
+          class="ease cursor-pointer rounded-xl p-1.5 transition-all duration-200 hover:-translate-x-0.5 hover:bg-white/20"
+          :class="[{ 'bg-white/20': m.href == activeMenuKey }]"
+          @click.stop="$emit('click', m?.href || '')"
+        >
+          <component :is="m.icon" class="size-6! text-gray-100!" filled />
+        </div>
+      </template>
     </nav>
 
-    <button @click.stop="handleLogout" class="group absolute bottom-4 cursor-pointer bg-white/15 p-1.5 rounded-full hover:bg-white duration-300 ease-linear">
+    <button
+      @click.stop="handleLogout"
+      class="group absolute bottom-4 cursor-pointer rounded-full bg-white/15 p-1.5 duration-300 ease-linear hover:bg-white"
+    >
       <IconLogout class="ease size-5! text-white duration-300 group-hover:text-blue-400" filled />
     </button>
   </div>

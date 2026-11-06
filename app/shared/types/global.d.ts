@@ -36,6 +36,7 @@ declare global {
     key: string;
     label: string;
     href?: string;
+    enableMenu?: boolean;
   }
 
   type Submenu = MenuItem & { subitems: Array<MenuItem> };

@@ -5,7 +5,7 @@ defineProps<{ msg?: string }>();
 </script>
 
 <template>
-  <div v-if="Boolean(msg)" class="relative mt-2 flex items-center gap-1 ml-1">
+  <div v-if="Boolean(msg)" class="relative mt-2 ml-1 flex items-center gap-1">
     <IconFieldError class="size-4! text-red-600" filled />
     <small class="text-xs text-red-500">{{ msg }}</small>
   </div>

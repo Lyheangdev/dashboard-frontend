@@ -5,7 +5,6 @@ defineProps<{
   pageLabel: string;
   containerClass?: string;
 }>();
-
 </script>
 
 <template>
@@ -36,7 +35,10 @@ defineProps<{
       </div>
     </div>
 
-    <div class="relative mt-2 flex max-w-full flex-1 flex-col gap-2 rounded-xl bg-white p-2" :class="containerClass">
+    <div
+      class="relative mt-2 flex max-w-full flex-1 flex-col gap-2 rounded-xl bg-white p-2"
+      :class="containerClass"
+    >
       <slot />
     </div>
   </div>
