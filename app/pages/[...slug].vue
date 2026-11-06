@@ -1,7 +1,7 @@
 <script setup lang="ts">
 useHead({
-  title: "Not Found"
-})
+  title: 'Not Found',
+});
 definePageMeta({
   layout: 'admin',
 });

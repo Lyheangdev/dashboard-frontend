@@ -11,8 +11,8 @@ definePageMeta({
 });
 
 useHead({
-  title: "My Profile"
-})
+  title: 'My Profile',
+});
 const authStore = useAuthStore();
 const runtimeConfig = useRuntimeConfig();
 </script>

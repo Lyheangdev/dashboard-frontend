@@ -17,8 +17,8 @@ definePageMeta({
 });
 
 useHead({
-  title: 'Login'
-})
+  title: 'Login',
+});
 
 const eyeCheck = ref(false);
 
