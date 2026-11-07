@@ -1,228 +1,19 @@
 <script setup lang="ts">
 import IconCollapse from '~~/public/icons/chevron-collapse.svg';
 
-import IconDashboard from '~~/public/dashboard/dashboar-home.svg';
-import IconSettings from '~~/public/dashboard/settings.svg';
-import IconReports from '~~/public/dashboard/reports.svg';
-import IconDatabase from '~~/public/icons/database.svg';
-import IconLogging from '~~/public/icons/logging.svg';
 import IconClock from '~~/public/icons/clock.svg';
 import IconHistory from '~~/public/icons/history.svg';
 import IconClose from '~~/public/icons/close.svg';
-import { checkExactOneMenuExist, checkSomeResourceExist } from '~/shared/utils/authority-helper';
-import { EMenu, EResource, ERole } from '~/shared/utils/authorities';
+import { useSystemMenu } from '~/composables/menu/useSystemMenu';
 
-const auth = useAuthStore();
+const { menu, activeMenu, activeMenuPath, handleMenuClick } = useSystemMenu();
 
-const menu = computed<MenuList>(() => {
-  return [
-    {
-      key: 'menu-dashboard-key',
-      label: 'Dashboard',
-      icon: IconDashboard,
-      href: ROUTE.$dashboard('/dashboard/summury'),
-      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_DASHBOARD_MENU),
-      submenu: [
-        {
-          key: 'section-overview-summury-key',
-          label: 'Overview Summary',
-          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [EResource.DASHBOARD]),
-          subitems: [
-            {
-              key: 'submenu-dashboard-key',
-              label: 'Dashboard',
-              href: ROUTE.$dashboard('/dashboard/summury'),
-            },
-          ],
-        },
-      ],
-    },
-    {
-      key: 'menu-input-yield-key',
-      label: 'Input Yield',
-      icon: IconReports,
-      href: ROUTE.$yield('/yield/input'),
-      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_YIELD_MENU),
-      submenu: [
-        {
-          key: 'section-tracking-input-key',
-          label: 'Tracking Yield',
-          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [EResource.YIELD]),
-          subitems: [
-            {
-              key: 'submenu-input-yield-key',
-              label: 'Input Yield',
-              href: ROUTE.$yield('/yield/input'),
-            },
-          ],
-        },
-      ],
-    },
-    {
-      key: 'menu-manage-resource-key',
-      label: 'Manage Resource',
-      icon: IconDatabase,
-      href: ROUTE.$miscellaneous('/miscellaneous/line'),
-      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_MICELLANEOUS_MENU),
-      submenu: [
-        {
-          key: 'section-resource-key',
-          label: 'Manage Resource',
-          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [
-            EResource.LINE,
-            EResource.LINE_OWNER,
-            EResource.JOBORDER,
-            EResource.WORKORDER,
-            EResource.CUSTOMER,
-            EResource.LINE_OWNER,
-            EResource.PROCESS,
-            EResource.PROJECT,
-            EResource.PROJECT_LINE,
-          ]),
-          subitems: [
-            {
-              key: 'submenu-line-key',
-              label: 'Manage Line',
-              href: ROUTE.$miscellaneous('/miscellaneous/line'),
-            },
-            {
-              key: 'submenu-project-line-key',
-              label: 'Manage Project Line',
-              href: ROUTE.$miscellaneous('/miscellaneous/project-line'),
-            },
-            {
-              key: 'submenu-project-key',
-              label: 'Manage Project',
-              href: ROUTE.$miscellaneous('/miscellaneous/project'),
-            },
-            {
-              key: 'submenu-workorder-key',
-              label: 'Manage Workorder',
-              href: ROUTE.$miscellaneous('/miscellaneous/workorder'),
-            },
-            {
-              key: 'submenu-customer-key',
-              label: 'Manage customer',
-              href: ROUTE.$miscellaneous('/miscellaneous/customer'),
-            },
-            {
-              key: 'submenu-line-owner-key',
-              label: 'Manage Line Owner',
-              href: ROUTE.$miscellaneous('/miscellaneous/line-owner'),
-            },
-          ],
-        },
-      ],
-    },
-    {
-      key: 'menu-logging-key',
-      label: 'Logging',
-      icon: IconLogging,
-      href: ROUTE.$log('/log/operation-log'),
-      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_LOG_MENU),
-      submenu: [
-        {
-          key: 'section-logging-key',
-          label: 'Auditing & Logging',
-          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [EResource.LOG]),
-          subitems: [
-            {
-              key: 'submenu-operation-logging-key',
-              label: 'Operation Log File',
-              href: ROUTE.$log('/log/operation-log'),
-            },
-            {
-              key: 'submenu-error-logging-key',
-              label: 'Error Log File',
-              href: ROUTE.$log('/log/error-log'),
-            },
-          ],
-        },
-      ],
-    },
-    {
-      key: 'menu-setting-key',
-      label: 'Settings',
-      icon: IconSettings,
-      href: ROUTE.$settings('/settings/roles'),
-      enableMenu: checkExactOneMenuExist(auth.user?.views || [], EMenu.VIEW_SETTINGS_MENU),
-      submenu: [
-        {
-          key: 'section-permission-privilege-key',
-          label: 'Role & Permission',
-          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [
-            EResource.ROLE,
-            EResource.PERMISSION,
-          ]),
-          subitems: [
-            {
-              key: 'submenu-manage-role-key',
-              label: 'Manage Role',
-              href: ROUTE.$settings('/settings/roles'),
-            },
-            {
-              key: 'submenu-manage-permission-key',
-              label: 'Manage Permission',
-              href: ROUTE.$settings('/settings/permissions'),
-            },
-            {
-              key: 'submenu-config-role-permission-key',
-              label: 'Config Role & Permission',
-              href: ROUTE.$settings('/settings/config-role-permission'),
-            },
-          ],
-        },
-        {
-          key: 'section-user-key',
-          label: 'Internal User',
-          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [
-            EResource.USER,
-            EResource.SYSTEM_ACCESS,
-          ]),
-          subitems: [
-            {
-              key: 'submenu-manage-user-key',
-              label: 'Manage Users',
-              href: ROUTE.$settings('/settings/users'),
-            },
-            {
-              key: 'submenu-bind-user-key',
-              label: 'Manage User Access',
-              href: ROUTE.$settings('/settings/link-access'),
-            },
-          ],
-        },
-        {
-          key: 'section-setting-account-key',
-          label: 'User Account',
-          enableMenu: checkSomeResourceExist(auth.user?.resources || [], [
-            EResource.ACCOUNT,
-            EResource.SSE,
-          ]),
-          subitems: [
-            {
-              key: 'submenu-setting-my-account-key',
-              label: 'Person Profile',
-              href: ROUTE.$settings('/settings/my-profile'),
-            },
-          ],
-        },
-        {
-          key: 'section-setting-advance-option-key',
-          label: 'Advance Options',
-          enableMenu: auth.user?.role === ERole.SUPERADMIN,
-          subitems: [
-            {
-              key: 'submenu-setting-sse-key',
-              label: 'Configure SSE',
-              href: '#',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-});
+const {
+  isSubmenuCollapse,
+  isHistoryCollapse,
+  handleToggleCollapseHistory,
+  handleToggleCollapseSubmenu,
+} = useCollapseMenu();
 
 const accesshistory = [
   {
@@ -238,65 +29,6 @@ const accesshistory = [
     user: 'chanmonica@sviaec.com',
   },
 ];
-
-const activeMenu = ref<Menu | null>();
-
-const isCollapse = ref(false);
-const isCollapseHistory = ref(true);
-
-const route = useRoute();
-const router = useRouter();
-
-const handleToggleCollapse = () => {
-  isCollapse.value = !isCollapse.value;
-};
-
-const handleToggleCollapseHistory = () => {
-  isCollapseHistory.value = !isCollapseHistory.value;
-};
-
-const handleMenuClick = (href: string) => {
-  const currentMenu = (menu.value || []).find((m) => m?.href == href);
-  if (!currentMenu) {
-    activeMenu.value = null;
-    return;
-  }
-  activeMenu.value = currentMenu;
-  router.push(href);
-};
-
-provide(COLLAPSE_KEY, isCollapse);
-provide(COLLAPSE_HISTORY_KEY, isCollapseHistory);
-
-const validateRoute = () => {
-  const original = route.path.split('/');
-  original.shift(); //-- omit first path
-  original.pop(); //-- omit the last path
-
-  const joinPath = original.join('/') ? `/${original.join('/')}` : original.join('/');
-  const currentMenu = joinPath ? menu.value.find((m) => m?.href?.startsWith(joinPath)) : null;
-
-  if (!currentMenu) {
-    activeMenu.value = null;
-    return;
-  }
-
-  activeMenu.value = currentMenu;
-  router.push(route.path || activeMenu.value?.href || '');
-};
-
-// -- Run after route change not when initial mount
-watch(
-  () => route.fullPath,
-  () => {
-    validateRoute();
-  },
-);
-
-//-- Run for only initial mount
-onMounted(() => {
-  validateRoute();
-});
 </script>
 
 <template>
@@ -304,23 +36,21 @@ onMounted(() => {
     <div
       class="relative flex bg-white"
       :class="{
-        'bg-primary! transition-colors duration-150 ease-linear': isCollapse,
+        'bg-primary! transition-colors duration-150 ease-linear': isSubmenuCollapse,
       }"
     >
-      <MainMenu :active-menu-key="activeMenu?.href || ''" :menu="menu" @click="handleMenuClick" />
+      <MainMenu :active-menu-key="activeMenuPath || ''" :menu="menu" @click="handleMenuClick" />
       <SubMenu :menu="activeMenu" />
 
       <button
         class="ease absolute top-0 right-0 z-30 translate-3/5 cursor-pointer transition-transform duration-150"
-        :class="{
-          'rotate-180': isCollapse,
-        }"
-        @click.stop="handleToggleCollapse"
+        :class="[{ 'rotate-180': isSubmenuCollapse }]"
+        @click.stop="handleToggleCollapseSubmenu"
       >
         <IconCollapse
           class="size-6! fill-white text-blue-400"
           :class="{
-            'text-blue-300!': isCollapse,
+            'text-blue-300!': isSubmenuCollapse,
           }"
           filled
         />
@@ -333,7 +63,7 @@ onMounted(() => {
       <slot />
     </div>
 
-    <div v-if="isCollapseHistory" class="h-screen max-h-screen max-w-52 min-w-52 bg-white py-3.5">
+    <div v-if="isHistoryCollapse" class="h-screen max-h-screen max-w-52 min-w-52 bg-white py-3.5">
       <div class="pb-2.5">
         <div class="relative flex items-center gap-2 px-3">
           <div class="rounded-lg bg-blue-400/10 p-1">

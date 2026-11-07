@@ -1,4 +1,4 @@
-type ROUTE_SETTING_TYPE =
+type ROUTE_SETTINGS_TYPE =
   | '/settings'
   | '/settings/roles'
   | '/settings/permissions'
@@ -10,22 +10,24 @@ type ROUTE_SETTING_TYPE =
 type ROUTE_DASHBOARD_TYPE = '/dashboard' | '/dashboard/summury';
 type ROUTE_YIELD_TYPE = '/yield' | '/yield/input';
 type ROUTE_LOG_TYPE = '/log' | '/log/operation-log' | '/log/error-log';
-type ROUTE_MISCELLANEOUS_TYPE =
-  | '/miscellaneous'
-  | '/miscellaneous/line'
-  | '/miscellaneous/line/create'
-  | '/miscellaneous/project-line'
-  | '/miscellaneous/project-line/create'
-  | '/miscellaneous/project'
-  | '/miscellaneous/project/create'
-  | '/miscellaneous/customer'
-  | '/miscellaneous/customer/create'
-  | '/miscellaneous/workorder'
-  | '/miscellaneous/workorder/create'
-  | '/miscellaneous/line-owner'
-  | '/miscellaneous/line-owner/create'
-  | '/miscellaneous/joborder'
-  | '/miscellaneous/joborder/create';
+type ROUTE_RESOURCES_TYPE =
+  | '/resources'
+  | '/resources/line'
+  | '/resources/line/create'
+  | '/resources/project-line'
+  | '/resources/project-line/create'
+  | '/resources/project'
+  | '/resources/project/create'
+  | '/resources/customer'
+  | '/resources/customer/create'
+  | '/resources/workorder'
+  | '/resources/workorder/create'
+  | '/resources/line-owner'
+  | '/resources/line-owner/create'
+  | '/resources/joborder'
+  | '/resources/joborder/create'
+  | '/resources/process'
+  | '/resources/process/create';
 
 export const ROUTE = {
   HOME: '/',
@@ -36,19 +38,29 @@ export const ROUTE = {
     return `${this.ADMIN}${path}`;
   },
 
-  $yield: function (path: ROUTE_YIELD_TYPE) {
-    return `${this.ADMIN}${path}`;
+  $yield: function (path: ROUTE_YIELD_TYPE, param?: string) {
+    const buildPath = param ? `${this.ADMIN}${path}/${param}` : `${this.ADMIN}${path}`;
+    return `${buildPath}`;
   },
 
   $log: function (path: ROUTE_LOG_TYPE) {
     return `${this.ADMIN}${path}`;
   },
 
-  $miscellaneous: function (path: ROUTE_MISCELLANEOUS_TYPE) {
+  $resources: function (path: ROUTE_RESOURCES_TYPE) {
     return `${this.ADMIN}${path}`;
   },
 
-  $settings: function (path: ROUTE_SETTING_TYPE) {
+  $settings: function (path: ROUTE_SETTINGS_TYPE) {
     return `${this.ADMIN}${path}`;
   },
 } as const;
+
+//* -- Assembly main menu for fast loop up
+export const ROUTE_MENU = [
+  ROUTE.$dashboard('/dashboard'),
+  ROUTE.$yield('/yield'),
+  ROUTE.$log('/log'),
+  ROUTE.$resources('/resources'),
+  ROUTE.$settings('/settings'),
+];

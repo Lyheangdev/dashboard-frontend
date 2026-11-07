@@ -10,6 +10,9 @@ definePageMeta({
   layout: 'admin',
 });
 
+useHead({
+  title: 'My Profile',
+});
 const authStore = useAuthStore();
 const runtimeConfig = useRuntimeConfig();
 </script>
