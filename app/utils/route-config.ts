@@ -7,7 +7,7 @@ type ROUTE_SETTINGS_TYPE =
   | '/settings/config-role-permission'
   | '/settings/my-profile';
 
-type ROUTE_DASHBOARD_TYPE = '/dashboard' | '/dashboard/summury';
+type ROUTE_DASHBOARD_TYPE = '/dashboard' | '/dashboard/summary';
 type ROUTE_YIELD_TYPE = '/yield' | '/yield/input';
 type ROUTE_LOG_TYPE = '/log' | '/log/operation-log' | '/log/error-log';
 type ROUTE_RESOURCES_TYPE =

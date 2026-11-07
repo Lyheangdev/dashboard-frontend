@@ -2882,6 +2882,16 @@ hasown@^2.0.4:
   dependencies:
     function-bind "^1.1.2"
 
+highcharts-vue@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/highcharts-vue/-/highcharts-vue-2.0.2.tgz#f500b98766948094fb0985848176de54285e7eca"
+  integrity sha512-Qr4S3MAAAU3yYQj4pZTyDoIgDW4f4FLHBR1gxNQ/o8vte0RIw+t1JvDPizPWHrylD7vGPwXCLHmJn3j12knghg==
+
+highcharts@^13.1.1:
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-13.1.1.tgz#47906c1fc5bdae2900efa895b092e758a8c6dd6d"
+  integrity sha512-k/smhxCgaqHDsuy9ZCWs8FJNTPrbzc8BmMA4M/8f9JMwv9HgmNZjulyWwZ9q9ly6AzHpskL9mhlW8vgsSqnstg==
+
 hookable@^5.5.3:
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/hookable/-/hookable-5.5.3.tgz#6cfc358984a1ef991e2518cb9ed4a778bbd3215d"

@@ -48,7 +48,7 @@ export const useSystemMenu = () => {
               {
                 key: 'summary-dashboard-key',
                 label: 'Dashboard',
-                href: ROUTE.$dashboard('/dashboard/summury'),
+                href: ROUTE.$dashboard('/dashboard/summary'),
                 isAuthorized: checkExactOnePermissionExist(
                   auth.user?.permissions || [],
                   EPermission.DASHBOARD_READ,

@@ -26,7 +26,7 @@ const props = defineProps<{ error: NuxtError }>();
     </p>
 
     <button
-      @click.stop="clearError({ redirect: ROUTE.$dashboard('/dashboard/summury') })"
+      @click.stop="clearError({ redirect: ROUTE.$dashboard('/dashboard/summary') })"
       class="mt-2 cursor-pointer rounded-md bg-blue-400 px-4 py-2 text-sm text-white"
     >
       Go to Dashboard
