@@ -1,5 +1,6 @@
 import type { IAuthUser } from '~/shared/types/type.user';
 
+//! This plugin run on server once when the application initialize at the first time, and run in client when hydration
 export default defineNuxtPlugin(async () => {
   const runtimeConfig = useRuntimeConfig();
   const requestFetch = useRequestFetch();

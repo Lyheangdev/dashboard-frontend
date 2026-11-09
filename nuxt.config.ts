@@ -28,6 +28,7 @@ export default defineNuxtConfig({
         'dayjs',
         'vee-validate',
         'zod',
+        'highcharts-vue',
       ],
     },
   },
