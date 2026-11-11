@@ -1,6 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from '@tailwindcss/vite';
 
+//!--- This project used with typescript compiler 6.0.3,  don't change it
+//!--- @https://github.com/nuxt/nuxt/issues/29757#issuecomment-5100409578
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -29,6 +31,8 @@ export default defineNuxtConfig({
         'vee-validate',
         'zod',
         'highcharts-vue',
+        'highcharts',
+        'highcharts/highcharts-more',
       ],
     },
   },

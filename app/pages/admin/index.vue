@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import IconSearch from '~~/public/icons/search.svg';
 import IconSortBy from '~~/public/icons/sort.svg';
-import IconFilter from '~~/public/icons/filter-pipe.svg';
 import IconChevronLeft from '~~/public/icons/chevron-left.svg';
 import IconChevronRight from '~~/public/icons/chevron-right.svg';
 

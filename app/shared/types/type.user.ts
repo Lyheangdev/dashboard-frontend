@@ -1,3 +1,7 @@
+export interface ITester {
+  name?: string;
+}
+
 export interface IAuthUser {
   id: number;
   full_name?: string;

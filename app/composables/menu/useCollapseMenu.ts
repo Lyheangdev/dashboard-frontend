@@ -1,6 +1,6 @@
 export const useCollapseMenu = () => {
   const isSubmenuCollapse = ref(false);
-  const isHistoryCollapse = ref(true);
+  const isHistoryCollapse = ref(false);
 
   const handleToggleCollapseSubmenu = () => {
     isSubmenuCollapse.value = !isSubmenuCollapse.value;
@@ -12,7 +12,12 @@ export const useCollapseMenu = () => {
 
   //-- Injection collapse keys
   provide(COLLAPSE_KEY, isSubmenuCollapse); //-- for menu collapse
-  provide(COLLAPSE_HISTORY_KEY, isHistoryCollapse); // -- for history collapse
+  provide(COLLAPSE_HISTORY_KEY, {
+    isHistoryCollapse,
+    handleToggleCollapseHistory,
+  });
+
+  // -- for history collapse
 
   return {
     isSubmenuCollapse,
