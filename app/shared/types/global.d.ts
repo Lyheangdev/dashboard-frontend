@@ -1,6 +1,13 @@
+import type { InjectionKey, Ref } from 'vue';
+
 export {};
 
 declare global {
+  interface ICollapseHistory {
+    isHistoryCollapse: Ref<boolean>;
+    handleToggleCollapseHistory: () => void;
+  }
+
   //-- Api response type
   interface IApiMetadata {
     page: number;

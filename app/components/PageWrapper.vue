@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import IconProfile from '~~/public/icons/profile.svg';
+import IconHistory from '~~/public/icons/history.svg';
 
 defineProps<{
   pageLabel: string;
   containerClass?: string;
 }>();
+
+const historyPanel = inject(COLLAPSE_HISTORY_KEY);
+
+const handleToggleHistory = () => {
+  if (!historyPanel) return;
+  historyPanel.handleToggleCollapseHistory();
+};
 </script>
 
 <template>
@@ -19,6 +27,14 @@ defineProps<{
       </div>
       <div class="relative flex items-center gap-3.5">
         <NotificationBell />
+        <div class="h-4 w-px bg-blue-300" />
+        <button
+          class="flex cursor-pointer items-center gap-1.5 rounded-md"
+          @click.stop="handleToggleHistory"
+        >
+          <IconHistory class="size-4! text-blue-400" filled />
+          <span class="text-xs text-blue-400">History</span>
+        </button>
         <div class="h-4 w-px bg-blue-300" />
         <!-- Profile -->
         <div
