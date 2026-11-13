@@ -3,6 +3,7 @@ type ROUTE_SETTINGS_TYPE =
   | '/settings/roles'
   | '/settings/permissions'
   | '/settings/users'
+  | '/settings/users/create'
   | '/settings/link-access'
   | '/settings/config-role-permission'
   | '/settings/my-profile';

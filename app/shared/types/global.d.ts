@@ -71,6 +71,7 @@ declare global {
     width: number;
     type: StringConstructor | NumberConstructor | BooleanConstructor;
     sort?: IcollumnSort;
+    selfRender?: boolean;
     copied?: boolean;
     heanderClass?: string;
     textHeaderClass?: string;

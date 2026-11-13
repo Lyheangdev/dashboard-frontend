@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="T extends IColumnsField, K extends ICollumnHeader<T>">
+import IconNotFoundData from '~~/public/icons/not-found-data.svg';
+
 import dayjs from 'dayjs';
 
 interface Props {
@@ -201,58 +203,82 @@ const checkStickyField = (colKey?: string | null) => {
         </thead>
 
         <tbody>
-          <tr
-            v-for="(row, i) in recordsData"
-            :key="i"
-            class="border-b border-b-white/70 duration-200 ease-linear last:border-none even:bg-blue-200 hover:bg-blue-400"
-            :class="[
-              {
-                'bg-blue-500 even:bg-blue-500': recordIds.has(
-                  extractRowDataProperty(row, 'id') as number,
-                ),
-              },
-            ]"
-          >
-            <!--!select individual record  -->
-            <td class="borde-r sticky left-0 border-r-white bg-blue-50 text-sm last:border-none">
-              <div class="relative flex items-center justify-center">
-                <SmartCheckBox
-                  :is-checked="recordIds.has(extractRowDataProperty(row, 'id') as number)"
-                  :disabled="isLoading"
-                  @change="
-                    (checked) =>
-                      handleSelectIndividual(checked, (row as Record<string, any>)['id'] as number)
-                  "
-                />
-              </div>
-            </td>
-
-            <!--! If you want other field to left sticky instead, just change the value of (j) which respect to the field index  -->
-            <template v-for="([colKey, valueData], j) in Object.entries(row)" :key="`${i}_${j}`">
-              <td
-                v-if="displayFields.includes(String(colKey))"
-                class="border-r border-r-white/70 bg-blue-50/70 text-sm last:border-none"
-                :class="[
-                  'px-5 py-2',
-                  {
-                    'sticky left-10 z-10 bg-blue-200 px-8 text-center font-medium':
-                      checkStickyField(colKey),
-                  },
-                  headerConfigs[i]?.class,
-                ]"
-              >
-                <div class="flex items-center gap-2">
-                  <SmartCopyClipboard
-                    v-if="!!extractColumnConfig(colKey)?.copied"
-                    :text="String(valueData)"
-                  />
-                  <span class="text-gray-700" :class="extractColumnConfig(colKey)?.textClass">{{
-                    valueData
-                  }}</span>
+          <template v-if="!recordsData?.length">
+            <tr>
+              <td :colspan="Object.keys(columnsConfig)?.length + 1">
+                <div class="flex flex-col items-center justify-center bg-blue-50 py-8">
+                  <IconNotFoundData class="size-12! text-blue-400" filled />
+                  <h5 class="text-sm font-medium">Data not found</h5>
+                  <p class="text-xs">Try to refetch your data again!</p>
                 </div>
               </td>
-            </template>
-          </tr>
+            </tr>
+          </template>
+          <template v-else>
+            <tr
+              v-for="(row, i) in recordsData"
+              :key="i"
+              class="border-b border-b-white/70 duration-200 ease-linear last:border-none even:bg-blue-200 hover:bg-blue-400"
+              :class="[
+                {
+                  'bg-blue-500 even:bg-blue-500': recordIds.has(
+                    extractRowDataProperty(row, 'id') as number,
+                  ),
+                },
+              ]"
+            >
+              <!--!select individual record  -->
+              <td class="borde-r sticky left-0 border-r-white bg-blue-50 text-sm last:border-none">
+                <div class="relative flex items-center justify-center">
+                  <SmartCheckBox
+                    :is-checked="recordIds.has(extractRowDataProperty(row, 'id') as number)"
+                    :disabled="isLoading"
+                    @change="
+                      (checked) =>
+                        handleSelectIndividual(
+                          checked,
+                          (row as Record<string, any>)['id'] as number,
+                        )
+                    "
+                  />
+                </div>
+              </td>
+
+              <!--! If you want other field to left sticky instead, just change the value of (j) which respect to the field index  -->
+              <template v-for="([colKey, valueData], j) in Object.entries(row)" :key="`${i}_${j}`">
+                <td
+                  v-if="displayFields.includes(String(colKey))"
+                  class="border-r border-r-white/70 bg-blue-50/70 text-sm last:border-none"
+                  :class="[
+                    'px-5 py-2',
+                    {
+                      'sticky left-10 z-10 bg-blue-200 px-8 text-center font-medium':
+                        checkStickyField(colKey),
+                    },
+                    headerConfigs[i]?.class,
+                  ]"
+                >
+                  <!-- Column Data -->
+                  <template v-if="extractColumnConfig(colKey)?.selfRender">
+                    <slot :col-field="colKey" :col-value="String(valueData)" />
+                  </template>
+                  <template v-else>
+                    <div class="flex items-center gap-2">
+                      <SmartCopyClipboard
+                        v-if="!!extractColumnConfig(colKey)?.copied"
+                        :text="String(valueData)"
+                      />
+                      <span
+                        class="line-clamp-1 text-gray-700"
+                        :class="extractColumnConfig(colKey)?.textClass"
+                        >{{ valueData }}</span
+                      >
+                    </div>
+                  </template>
+                </td>
+              </template>
+            </tr>
+          </template>
         </tbody>
       </table>
     </SmartTableScrollable>

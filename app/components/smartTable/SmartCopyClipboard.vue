@@ -3,9 +3,23 @@ import IconClipboard from '~~/public/icons/copy-clipboard.svg';
 
 defineProps<{ text: string }>();
 
+const toat = useToaster();
+
+const openToast = () => {
+  toat.open({
+    isOpen: true,
+    title: 'Copied To Clipboard',
+    description: 'Data has been copied successfull.',
+    type: 'success',
+    position: 'top-right',
+    duration: 1,
+  });
+};
+
 const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
+    openToast();
   } catch (error) {
     console.error('Failed to copy:', error);
   }

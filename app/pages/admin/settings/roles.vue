@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EPermission } from '~/shared/utils/authorities';
+import { EPermission } from '~/shared/hepers/authorities';
 
 definePageMeta({
   layout: 'admin',

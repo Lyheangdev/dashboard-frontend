@@ -52,7 +52,7 @@ const handleToggleHistory = () => {
     </div>
 
     <div
-      class="relative mt-2 flex max-w-full flex-1 flex-col gap-2 rounded-xl bg-white p-2"
+      class="relative mt-2 max-w-full gap-2 rounded-xl bg-white p-2"
       :class="containerClass"
     >
       <slot />

@@ -4,14 +4,14 @@ import {
   checkExactOneResourceExist,
   checkSomePermissionExist,
   checkSomeResourceExist,
-} from '~/shared/utils/authority-helper';
+} from '~/shared/hepers/authority-helper';
 
 import IconDashboard from '~~/public/dashboard/dashboar-home.svg';
 import IconSettings from '~~/public/dashboard/settings.svg';
 import IconReports from '~~/public/dashboard/reports.svg';
 import IconDatabase from '~~/public/icons/database.svg';
 import IconLogging from '~~/public/icons/logging.svg';
-import { EMenu, EPermission, EResource, ERole } from '~/shared/utils/authorities';
+import { EMenu, EPermission, EResource, ERole } from '~/shared/hepers/authorities';
 
 /**
  ** Fast Looking Main Point
