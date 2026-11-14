@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    <p>Welcome to users Page</p>
-  </div>
+  <PageWrapper page-label="Manage Users">
+    <UserPageTable />
+  </PageWrapper>
 </template>

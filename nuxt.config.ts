@@ -33,6 +33,7 @@ export default defineNuxtConfig({
         'highcharts-vue',
         'highcharts',
         'highcharts/highcharts-more',
+        '@headlessui/vue'
       ],
     },
   },
