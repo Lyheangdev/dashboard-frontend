@@ -12,11 +12,11 @@ definePageMeta({
   <PageWrapper page-label="Create User" container-class="pl-0 py-0">
     <div class="grid w-full! grid-cols-12">
       <div class="col-span-9 border-r border-r-gray-200/70 min-[1537px]:col-span-10">
-        <div class="border-b border-b-gray-100 px-5 pb-2 pt-3">
+        <div class="border-b border-b-gray-100 px-5 pt-3 pb-2">
           <button class="cursor-pointer text-blue-400">Go Back</button>
         </div>
 
-        <div class="mt-3 grid grid-cols-2 gap-2.5 pt-2 pb-4 pr-4 pl-4">
+        <div class="mt-3 grid grid-cols-2 gap-2.5 pt-2 pr-4 pb-4 pl-4">
           <InputFieldSet label="First Name">
             <BaseInput placeholder="Insert first name ..." />
           </InputFieldSet>
